@@ -1,10 +1,10 @@
 {
   "development": {
-    "username": "root",
-    "password": "sidsidrhavpd",
-    "database": "sample",
-    "host": "127.0.0.1",
-    "port": 3307,
+    "username": "admin",
+    "password": "admin123",
+    "database": "nyangnyanggompeng",
+    "host": "nyangnyanggompeng.cy0uihtlhscp.ap-northeast-2.rds.amazonaws.com",
+    "port": 3306,
     "dialect": "mysql"
   },
   "test": {
