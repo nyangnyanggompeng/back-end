@@ -3,7 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
 // import cookieParser from "cookie-parser";
-// import indexRouter from "./src/controller/routes/index";
+import indexRouter from './routes/index.js';
 import db from './models/index.js';
 dotenv.config();
 
@@ -35,12 +35,7 @@ app.use(
   })
 );
 
-// app.use("/", indexRouter);
-// 페이지 로딩 함수
-app.get('/', (req, res) => {
-  // console.log(res);
-  res.render('test', {}); // views 폴더 밑에 있는 파일을 참조함
-});
+app.use('/api', indexRouter);
 
 app.use((req, res, next) => {
   const error = new Error(`${req.method} ${req.url} 찾을 수 없음`);
