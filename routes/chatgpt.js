@@ -1,26 +1,25 @@
 'use strict';
 import express from 'express';
-import callChatGPT from '../middleware/chatgpt.js';
+
+import getList from '../controller/chatGPT/getList.js';
+import postList from '../controller/chatGPT/postList.js';
+import getContent from '../controller/chatGPT/getContent.js';
+import postContent from '../controller/chatGPT/postContent.js';
+import deleteList from '../controller/chatGPT/deleteList.js';
+import getBookmark from '../controller/chatGPT/getBookmark.js';
+import setBookmark from '../controller/chatGPT/setBookmark.js';
 
 const router = express.Router();
-
-// import { User } from '../models/index.js';
-// import loginUser from '../controller/users/loginUser.js';
 
 router.get('/', (req, res) => {
   res.render('chatgpt', {}); // views 폴더 밑에 있는 파일을 참조함
 });
-
-router.post('/', async (req, res) => {
-  const prompt = req.body.prompt;
-  const response = await callChatGPT(prompt);
-  if (response) {
-    res.json(response);
-    console.log('response send compelete');
-  } else {
-    console.log('error in routes/chatgpt');
-    res.send('error in routes/chatgpt');
-  }
-});
+router.get('/list/:user_id', getList);
+router.post('/list/:user_id', postList);
+router.get('/content/:list_id', getContent);
+router.post('/content/:list_id', postContent);
+router.put('/list/:list_id', deleteList);
+router.get('/bookmark/:list_id', getBookmark);
+router.post('/bookmark/:content_id', setBookmark);
 
 export default router;
