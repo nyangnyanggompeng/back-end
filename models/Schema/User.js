@@ -15,22 +15,21 @@ const User = (sequelize, DataTypes) => {
       },
       username: {
         type: DataTypes.STRING(20),
-				allowNull: false, //필수
-        unique: true
+		allowNull: false, //필수
       },
       domain: {
         type: DataTypes.STRING(20),
 				allowNull: false, //필수
       },
       password: {
-        type: DataTypes.STRING(12),
-				allowNull: false, //필수
+        type: DataTypes.TEXT,
+		allowNull: false, //필수
       },
-			nickname: {
-				type: DataTypes.STRING(8),
-				allowNull: false,
+	  nickname: {
+		type: DataTypes.STRING(8),
+		allowNull: false,
         unique: true
-			},
+	  },
       auth_email: {
         type: DataTypes.BOOLEAN,
         allowNull: false,

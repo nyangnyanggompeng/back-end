@@ -6,8 +6,8 @@ const saltRounds = 10;
 function registerProcess (req, res) {
     const username = req.body.username;
     const domain = req.body.domain;
-    const password = req.body.pwd;
-    const password2 = req.body.pwd2;
+    const password = req.body.password;
+    const password2 = req.body.password2;
     const nickname = req.body.nickname;
 
     // 아이디, 비밀번호, 닉네임 모두 입력 받음
@@ -26,8 +26,7 @@ function registerProcess (req, res) {
                 if (password === password2) {
                     const re = /^[0-9a-zA-Z`~!@#$%^&*()-_=+?]{8,12}$/;
                     if (re.test(password)) {
-                        const encryptedPW = hashPassword(password);
-                        console.log(encryptedPW);
+                        const encryptedPW = bcrypt.hashSync(password, saltRounds);
                         // nickname 조건 만족하는지 체크
                         // nickname User table 에 있는지 체크 = 중복체크 
                         // 있으면 불가, 없으면 db 에 정보 저장하기
@@ -43,13 +42,14 @@ function registerProcess (req, res) {
                                     isAdmin: false,
                                     username: username,
                                     domain: domain,
-                                    password: password,
+                                    password: encryptedPW,
                                     nickname: nickname,
-                                    auth_email: false
+                                    auth_email: false // 마이페이지에서 인증?
                                 })
                             } else { // 이미 사용중
                                 // 오류코드 전송
                                 console.log("사용중인 닉네임");
+                                res.status(400).send("<script>alert('사용중인 닉네임'); history.go(-1)</script>");
                             }
                         })
                         .catch(function(err){
@@ -58,31 +58,33 @@ function registerProcess (req, res) {
                     } else {
                         // 오류코드 전송
                         console.log("비밀번호를 다시 입력해주세요");
+                        res.status(400).send("<script>alert('비밀번호 길이 오류 또는 문자 오류'); history.go(-1)</script>");
                     }
                 } else {
                     console.log("비밀번호 불일치");
+                    res.status(400).send("<script>alert('비밀번호 불일치'); history.go(-1)</script>");
                 }
             } else {
                 // 오류코드 전송
                 console.log("사용중인 이메일");
+                res.status(400).send("<script>alert('사용중인 이메일'); history.go(-1)</script>");
             }
         })
         .catch(function(err){
             console.log(err);
         });
     } else if (username && domain && password && password2) {
-    // 닉네임 입력하지 않음
-        console.log("fill the blank");
-        res.status(400).json({message: "Fill out the nickname"});
+        // 닉네임 입력하지 않음
+        console.log("fill out your nickname");
+        res.status(400).json({message: "Fill out your nickname"});
     } else {
         // 아이디 or 비밀번호 or 닉네임 입력하지 않음
-        console.log("fill the blank");
+        console.log("User didn't fill out the value(s)");
         res.status(400).json({message: "Fill out the blank"});
     }
 }
 
 function idCheck (req, res) {
-    // user input
     const username = req.body.username;
     const domain = req.body.domain;
 
@@ -93,10 +95,12 @@ function idCheck (req, res) {
         .then(result => {
             if (result.length == 0) {
                 console.log("사용가능 이메일");
-                res.send(JSON.stringify(1));
+                res.send("<script>alert('사용가능 이메일'); history.go(-1)</script>");
+                //res.send(JSON.stringify(1));
             } else {
                 console.log("사용중인 이메일");
-                res.send(JSON.stringify(0));
+                res.status(400).send("<script>alert('사용불가 이메일'); history.go(-1)</script>");
+                //res.send(JSON.stringify(0));
             }
         })
         .catch(function(err){
@@ -104,25 +108,45 @@ function idCheck (req, res) {
         });
     } else {
         console.log("fill out the blank");
+        res.status(400).send("<script>alert('값을 입력하지 않음'); history.go(-1)</script>");
     }
     
 }
 
-function hashPassword (password) {
-    bcrypt.genSalt(saltRounds, function (err, salt) {
-        if (err) return err;
-        bcrypt.hash(password, salt)
-        .then(result => {
-            console.log(result);
-            return result;
+function passwordCheck (req, res) {
+    const password = req.body.password;
+    const password2 = req.body.password2;
+
+    if (password && password2) {
+        if (password === password2) {
+            const re = /^[0-9a-zA-Z`~!@#$%^&*()-_=+?]{8,12}$/;
+            if (re.test(password)) {
+                res.status(200).send({
+                    "message": "",
+                    "success": true
+                })
+            } else {
+                res.status(400).send({
+                    "message": "비밀번호 형식이 잘못 되었습니다. 영문자, 숫자, 특수문자 8-12자로 입력해주세요",
+                    "success": false
+                })
+            }
+        } else {
+            res.status(400).send({
+                "message": "비밀번호가 다릅니다.",
+                "success": false
+            })
+        }
+    } else {
+        res.status(400).send({
+            "message": "비밀번호가 입력되지 않았습니다.",
+            "success": false
         })
-        .catch(function(err){
-            console.log(err);
-        });
-    })
+    }
 }
 
 export default {
     registerProcess,
-    idCheck
+    idCheck,
+    passwordCheck
 }
