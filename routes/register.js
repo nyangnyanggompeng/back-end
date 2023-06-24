@@ -10,5 +10,6 @@ router.get('/', (req, res) => {
 
 router.post('/register_process', controller.registerProcess);
 router.post('/idcheck', controller.idCheck);
+router.post('/password_check', controller.passwordCheck);
 
 export default router;

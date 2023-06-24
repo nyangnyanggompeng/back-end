@@ -2,7 +2,7 @@ const User = (sequelize, DataTypes) => {
 	const User = sequelize.define(
 		"User",
 		{
-	  id: {
+			id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         primaryKey: true,
@@ -15,7 +15,7 @@ const User = (sequelize, DataTypes) => {
       },
       username: {
         type: DataTypes.STRING(20),
-		allowNull: false, //필수
+				allowNull: false, //필수
       },
       domain: {
         type: DataTypes.STRING(20),
@@ -23,13 +23,13 @@ const User = (sequelize, DataTypes) => {
       },
       password: {
         type: DataTypes.TEXT,
-		allowNull: false, //필수
+				allowNull: false, //필수
       },
-	  nickname: {
-		type: DataTypes.STRING(8),
-		allowNull: false,
+			nickname: {
+				type: DataTypes.STRING(8),
+				allowNull: false,
         unique: true
-	  },
+			},
       auth_email: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
