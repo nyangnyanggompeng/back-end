@@ -5,16 +5,19 @@ import models from '../../models/index.js';
 const setBookmark = async (req, res, next) => {
   try {
     const contentId = Number(req.params.content_id);
-    const status = req.body.status;
+    const status = req.query.isBookmarked;
 
-    await models.ChatGPTList.update(
+    const bookmark = await models.ChatGPTContent.update(
       {
         bookmark: status
       },
       { where: { id: contentId } }
     );
-
-    res.send(status);
+    if (bookmark[0] == 1) {
+      res.send('success');
+    } else {
+      res.send('fail');
+    }
   } catch (err) {
     console.log(err);
   }

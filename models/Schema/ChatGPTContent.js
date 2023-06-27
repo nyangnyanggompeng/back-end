@@ -16,9 +16,9 @@ const ChatGPTContent = (sequelize, DataTypes) => {
         defaultValue: ''
       },
       bookmark: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.BOOLEAN,
         allowNull: false,
-        defaultValue: 0
+        defaultValue: false
       }
     },
     {

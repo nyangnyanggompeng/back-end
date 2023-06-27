@@ -7,14 +7,14 @@ const deleteList = async (req, res, next) => {
     const listId = Number(req.params.list_id);
 
     // list에서는 삭제가 되었는데, content에서는 동기화가 안됨,,
-    const List = await models.ChatGPTList.destroy({
+    await models.ChatGPTList.destroy({
       where: {
         id: listId
       }
     });
 
     // 결과를 API POST의 결과로 return
-    res.json(List);
+    res.json('ok');
   } catch (err) {
     console.log(err);
   }

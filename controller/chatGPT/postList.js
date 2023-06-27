@@ -5,9 +5,11 @@ import models from '../../models/index.js';
 const postList = async (req, res, next) => {
   try {
     const userId = Number(req.params.user_id);
+    const listName = req.body.name;
 
     const List = await models.ChatGPTList.create({
-      user_id: `${userId}` // Foreign Key
+      user_id: `${userId}`, // Foreign Key
+      name: listName
     });
 
     // 결과를 API POST의 결과로 return
