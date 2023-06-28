@@ -7,7 +7,7 @@ const getContent = async (req, res, next) => {
     const listId = Number(req.params.list_id);
 
     const content = await models.ChatGPTContent.findAll({
-      attributes: ['sender', 'content'],
+      attributes: ['question_num', 'sender', 'content', 'bookmark'],
       include: {
         model: models.ChatGPTList,
         where: { id: listId }

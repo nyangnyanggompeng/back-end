@@ -19,16 +19,7 @@ const ChatGPTList = (sequelize, DataTypes) => {
       paranoid: true
     }
   );
-  // ChatGPTList.associate = db => {
-  //   db.ChatGPTList.belongsTo(db.User, {
-  //     foreignKey: 'user_id',
-  //     targetKey: 'id'
-  //   });
-  //   db.ChatGPTList.hasMany(db.ChatGPTContent, {
-  //     foreignKey: 'list_id',
-  //     sourceKey: 'id'
-  //   });
-  // };
+
   return ChatGPTList;
 };
 

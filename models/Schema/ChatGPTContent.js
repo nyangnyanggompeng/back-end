@@ -6,6 +6,10 @@ const ChatGPTContent = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false
       },
+      question_num: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      },
       sender: {
         type: DataTypes.STRING(10),
         allowNull: false
@@ -28,12 +32,7 @@ const ChatGPTContent = (sequelize, DataTypes) => {
       paranoid: true
     }
   );
-  // ChatGPTContent.associate = db => {
-  //   db.ChatGPTContent.belongsTo(db.ChatGPTList, {
-  //     foreignKey: 'list_id',
-  //     targetKey: 'id'
-  //   });
-  // };
+
   return ChatGPTContent;
 };
 
