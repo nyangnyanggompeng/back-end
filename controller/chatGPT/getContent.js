@@ -6,17 +6,18 @@ const getContent = async (req, res, next) => {
   try {
     const listId = Number(req.params.list_id);
 
-    const content = await models.ChatGPTContent.findAll({
-      attributes: ['question_num', 'sender', 'content', 'bookmark'],
-      include: {
-        model: models.ChatGPTList,
-        where: { id: listId }
-      }
+    const Content = await models.ChatGPTContent.findAll({
+      where: { list_id: listId }
     });
 
-    res.send(content);
+    if (Content) {
+      res.status(200).json(Content);
+    } else {
+      res.status(400).send('400 Bad Request');
+    }
   } catch (err) {
     console.log(err);
+    res.status(400).send('400 Bad Request');
   }
 };
 

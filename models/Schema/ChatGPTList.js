@@ -5,6 +5,10 @@ const ChatGPTList = (sequelize, DataTypes) => {
       name: {
         type: DataTypes.STRING(20),
         allowNull: false //필수
+      },
+      type: {
+        type: DataTypes.STRING(10),
+        defaultValue: ''
       }
     },
     {

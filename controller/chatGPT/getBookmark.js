@@ -7,20 +7,33 @@ import models from '../../models/index.js';
 
 const getContent = async (req, res, next) => {
   try {
-    const listId = Number(req.params.list_id);
+    const userId = Number(req.params.user_id);
+    let Content = [];
 
-    const content = await models.ChatGPTContent.findAll({
-      attributes: ['sender', 'content'],
-      where: { bookmark: true },
-      include: {
-        model: models.ChatGPTList,
-        where: { id: listId }
-      }
+    const List = await models.ChatGPTList.findAll({
+      attributes: ['id'],
+      where: { user_id: userId }
     });
 
-    res.send(content);
+    // console.log('list count = ', List.length);
+    // console.log('id = ', List[0].dataValues.id);
+
+    for (let i = 0; i < List.length; i++) {
+      Content.push(
+        await models.ChatGPTContent.findAll({
+          where: { bookmark: true, list_id: List[i].dataValues.id }
+        })
+      );
+    }
+
+    if (Content) {
+      res.status(200).json(Content);
+    } else {
+      res.status(400).send('400 Bad Request');
+    }
   } catch (err) {
     console.log(err);
+    res.status(400).send('400 Bad Request');
   }
 };
 

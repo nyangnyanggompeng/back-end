@@ -6,17 +6,18 @@ const getList = async (req, res, next) => {
   try {
     const userId = Number(req.params.user_id);
 
-    const listId = await models.ChatGPTList.findAll({
-      attributes: ['id'],
-      include: {
-        model: models.User,
-        where: { id: userId }
-      }
+    const List = await models.ChatGPTList.findAll({
+      where: { user_id: userId }
     });
 
-    res.send(listId);
+    if (List) {
+      res.status(200).json(List);
+    } else {
+      res.status(400).send('400 Bad Request');
+    }
   } catch (err) {
     console.log(err);
+    res.status(400).send('400 Bad Request');
   }
 };
 
