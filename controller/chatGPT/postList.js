@@ -18,9 +18,9 @@ const postList = async (req, res, next) => {
       res.status(400).send('대화목록을 더 이상 만들 수 없습니다.');
     } else {
       const duplication = await models.ChatGPTList.findAll({
-        where: { user_id: userId }
+        where: { user_id: userId, name: listName }
       });
-      if (!duplication) {
+      if (duplication.length === 0) {
         const List = await models.ChatGPTList.create({
           user_id: `${userId}`, // Foreign Key
           name: listName
@@ -33,6 +33,7 @@ const postList = async (req, res, next) => {
     }
   } catch (err) {
     console.log(err);
+    res.status(400);
   }
 };
 
