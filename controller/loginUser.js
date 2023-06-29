@@ -1,12 +1,9 @@
 import express from 'express';
 import db from '../models/index.js';
+
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import cookieParser from 'cookie-parser';
-
-function showUsers (req, res) {
-    
-}
 
 async function login (req, res) {
     const username = req.body.username;
@@ -37,6 +34,5 @@ async function login (req, res) {
 }
 
 export default {
-    showUsers,
     login
 }
