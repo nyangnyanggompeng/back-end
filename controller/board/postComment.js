@@ -6,32 +6,29 @@ const postComment = async (req, res, next) => {
   try {
     const postId = Number(req.params.post_id);
     const userId = Number(req.params.user_id);
-    const { writer, content } = req.body;
-    let nickname;
+    const { content } = req.body;
 
     const User = await models.User.findOne({
       where: { id: userId }
     });
 
-    const isAdmin = User.isAdmin;
-    if (!writer) {
-      nickname = User.nickname;
-    } else {
-      nickname = writer;
-    }
-
     const Comment = await models.Comment.create({
       user_id: `${userId}`, // Foreign Key
-      isAdmin: isAdmin,
-      board_id: `${postId}`,
-      writer: nickname,
+      isAdmin: User.isAdmin,
+      list_id: `${postId}`,
+      writer: User.nickname,
       content: content
     });
 
     // 결과를 API POST의 결과로 return
-    res.status(200).json(Comment);
+    if (Comment) {
+      res.status(200).send(Comment);
+    } else {
+      res.status(400);
+    }
   } catch (err) {
     console.log(err);
+    res.status(400);
   }
 };
 

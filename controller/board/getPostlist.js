@@ -18,9 +18,14 @@ const getPostlist = async (req, res, next) => {
     });
 
     // 결과를 API POST의 결과로 return
-    res.status(200).json(Post);
+    if (Post) {
+      res.status(200).send(Post);
+    } else {
+      res.status(400);
+    }
   } catch (err) {
     console.log(err);
+    res.status(400);
   }
 };
 

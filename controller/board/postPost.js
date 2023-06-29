@@ -6,22 +6,13 @@ const postPost = async (req, res, next) => {
   try {
     const userId = Number(req.params.user_id);
     const { title, content, writer } = req.body;
-    let User;
-    let nickname;
 
-    // writer에 값이 없으면
-    if (!writer) {
-      User = await models.User.findOne({
-        where: { id: userId }
-      });
-      nickname = User.nickname;
-    } else {
-      User = await models.User.findOne({
-        where: { id: userId }
-      });
-      nickname = writer;
-    }
+    const User = await models.User.findOne({
+      where: { id: userId }
+    });
+
     const isAdmin = User.isAdmin;
+    const nickname = User.nickname;
 
     const Post = await models.Post.create({
       user_id: `${userId}`, // Foreign Key
@@ -32,9 +23,14 @@ const postPost = async (req, res, next) => {
     });
 
     // 결과를 API POST의 결과로 return
-    res.status(200).json(Post);
+    if (Post) {
+      res.status(200).json(Post);
+    } else {
+      res.status(400);
+    }
   } catch (err) {
     console.log(err);
+    res.status(400);
   }
 };
 

@@ -2,10 +2,6 @@ const ChatGPTList = (sequelize, DataTypes) => {
   const ChatGPTList = sequelize.define(
     'ChatGPTList',
     {
-      user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
       name: {
         type: DataTypes.STRING(20),
         allowNull: false, //필수

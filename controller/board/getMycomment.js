@@ -1,13 +1,14 @@
-// GET /board/:post_id/comment
+// GET /board/:user_id/posts
 // 댓글 목록 조회
 import models from '../../models/index.js';
 
-const getCommentlist = async (req, res, next) => {
+const getMycomment = async (req, res, next) => {
   try {
-    const postId = Number(req.params.post_id);
-
+    const userId = Number(req.params.user_id);
     const Comment = await models.Comment.findAll({
-      where: { list_id: postId }
+      where: {
+        user_id: userId
+      }
     });
 
     // 결과를 API POST의 결과로 return
@@ -22,4 +23,4 @@ const getCommentlist = async (req, res, next) => {
   }
 };
 
-export default getCommentlist;
+export default getMycomment;

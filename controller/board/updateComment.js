@@ -15,18 +15,15 @@ const updatePost = async (req, res, next) => {
       { where: { id: commentId } }
     );
 
-    // const Comment = await models.Comment.update(
-    //   {
-    //     writer: writer,
-    //     content: content,
-    //   },
-    //   { where: { id: commentId } }
-    // );
-
     // 결과를 API POST의 결과로 return
-    res.status(200).json(Comment);
+    if (Comment) {
+      res.status(200);
+    } else {
+      res.status(400);
+    }
   } catch (err) {
     console.log(err);
+    res.status(400);
   }
 };
 

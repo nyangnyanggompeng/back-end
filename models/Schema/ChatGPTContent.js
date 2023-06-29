@@ -2,10 +2,6 @@ const ChatGPTContent = (sequelize, DataTypes) => {
   const ChatGPTContent = sequelize.define(
     'ChatGPTContent',
     {
-      list_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
       question_num: {
         type: DataTypes.INTEGER,
         defaultValue: 0

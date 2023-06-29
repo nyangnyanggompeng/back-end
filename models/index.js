@@ -61,6 +61,16 @@ db.Post.belongsTo(db.User, {
   targetKey: 'id',
   onDelete: 'cascade'
 });
+db.User.hasMany(db.Post, {
+  foreignKey: 'isAdmin',
+  targetKey: 'isAdmin',
+  onDelete: 'cascade'
+});
+db.Post.belongsTo(db.User, {
+  foreignKey: 'isAdmin',
+  targetKey: 'isAdmin',
+  onDelete: 'cascade'
+});
 
 // User - Comment
 db.User.hasMany(db.Comment, {
@@ -71,6 +81,16 @@ db.User.hasMany(db.Comment, {
 db.Comment.belongsTo(db.User, {
   foreignKey: 'user_id',
   targetKey: 'id',
+  onDelete: 'cascade'
+});
+db.User.hasMany(db.Comment, {
+  foreignKey: 'isAdmin',
+  targetKey: 'isAdmin',
+  onDelete: 'cascade'
+});
+db.Comment.belongsTo(db.User, {
+  foreignKey: 'isAdmin',
+  targetKey: 'isAdmin',
   onDelete: 'cascade'
 });
 

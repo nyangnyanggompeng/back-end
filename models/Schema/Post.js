@@ -2,15 +2,6 @@ const Post = (sequelize, DataTypes) => {
   const Post = sequelize.define(
     'Post',
     {
-      user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
-      isAdmin: {
-        type: DataTypes.BOOLEAN,
-        //allowNull: false,
-        defaultValue: 0
-      },
       writer: {
         type: DataTypes.STRING(10)
       },
@@ -22,7 +13,7 @@ const Post = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false
       },
-      comment_id: {
+      num_of_comment: {
         type: DataTypes.INTEGER,
         defaultValue: 0
       }

@@ -2,18 +2,6 @@ const Comment = (sequelize, DataTypes) => {
   const Comment = sequelize.define(
     'Comment',
     {
-      user_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
-      isAdmin: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false
-      },
-      board_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
       writer: {
         type: DataTypes.STRING(10),
         allowNull: false //필수
