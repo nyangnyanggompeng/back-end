@@ -26,14 +26,14 @@ const postList = async (req, res, next) => {
           name: listName
         });
         // 결과를 API POST의 결과로 return
-        res.json(List);
+        res.status(200).json(List);
       } else {
         res.status(400).send('대화목록 이름이 이미 있습니다.');
       }
     }
   } catch (err) {
     console.log(err);
-    res.status(400);
+    res.status(400).send('400 Bad Request');
   }
 };
 

@@ -21,7 +21,7 @@ router.get('/content/:list_id', getContent);
 router.post('/content/:list_id', postContent);
 router.post('/content/:list_id/:question_num', postAnswer);
 router.put('/list/:list_id', deleteList);
-router.get('/bookmark/:list_id', getBookmark);
-router.post('/bookmark/:content_id', setBookmark);
+router.get('/bookmark/:user_id', getBookmark);
+router.get('/bookmark/set/:content_id', setBookmark);
 
 export default router;

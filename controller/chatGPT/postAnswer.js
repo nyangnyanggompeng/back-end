@@ -41,17 +41,21 @@ const postAnswer = async (req, res, next) => {
     // 이후 middleware/chatgpt 실행
     const response = await callChatGPT(content);
 
-    await models.ChatGPTContent.create({
+    const Content = await models.ChatGPTContent.create({
       list_id: `${listId}`,
       sender: 'assistant',
       content: response.content,
       question_num: questionNum
     });
 
-    // 결과를 API POST의 결과로 return
-    res.json('ok');
+    if (Content) {
+      res.status(200).json(Content);
+    } else {
+      res.status(400).send('400 Bad Request');
+    }
   } catch (err) {
     console.log(err);
+    res.status(400).send('400 Bad Request');
   }
 };
 
