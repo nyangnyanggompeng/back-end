@@ -1,5 +1,5 @@
 import express from 'express';
-import db from "../models/index.js";
+import db from "../../models/index.js";
 import bcrypt from 'bcrypt';
 const saltRounds = 10;
 
@@ -7,11 +7,11 @@ function registerProcess (req, res) {
     const username = req.body.username;
     const domain = req.body.domain;
     const password = req.body.password;
-    const password2 = req.body.password2;
+    const passwordVerify = req.body.passwordVerify;
     const nickname = req.body.nickname;
 
     // 아이디, 비밀번호, 닉네임 모두 입력 받음
-    if (username && domain && password && password2 && nickname) {
+    if (username && domain && password && passwordVerify && nickname) {
         // username+domain 조건 만족하는지 체크
         // username 이 User table 에 있는지 체크 -> 중복체크 -> API가 있는데?
         // db 에 있으면 불가, 없으면 db 에 정보 저장하여 새 계정 생성
@@ -21,9 +21,9 @@ function registerProcess (req, res) {
         .then(result => {
             if (result.length == 0) { // test@domain.com 사용가능 확인됨
                 // 비밀번호 조건 (영문자, 숫자, 특수기호, 8이상 12이하) 만족하는지 체크
-                // if password != password2 -> fail to sign up, else -> ?
+                // if password != passwordVerify -> fail to sign up, else -> ?
                 // 비밀번호 암호화하여 저장?
-                if (password === password2) {
+                if (password === passwordVerify) {
                     const re = /^[0-9a-zA-Z`~!@#$%^&*()-_=+?]{8,12}$/;
                     if (re.test(password)) {
                         const encryptedPW = bcrypt.hashSync(password, saltRounds);
@@ -73,7 +73,7 @@ function registerProcess (req, res) {
         .catch(function(err){
             console.log(err);
         });
-    } else if (username && domain && password && password2) {
+    } else if (username && domain && password && passwordVerify) {
         // 닉네임 입력하지 않음
         console.log("fill out your nickname");
         res.status(400).json({message: "Fill out your nickname"});
@@ -84,69 +84,8 @@ function registerProcess (req, res) {
     }
 }
 
-function idCheck (req, res) {
-    const username = req.body.username;
-    const domain = req.body.domain;
 
-    if (username && domain) {
-        db.User.findAll({
-            where: {username: username, domain: domain}
-        })
-        .then(result => {
-            if (result.length == 0) {
-                console.log("사용가능 이메일");
-                res.send("<script>alert('사용가능 이메일'); history.go(-1)</script>");
-                //res.send(JSON.stringify(1));
-            } else {
-                console.log("사용중인 이메일");
-                res.status(400).send("<script>alert('사용불가 이메일'); history.go(-1)</script>");
-                //res.send(JSON.stringify(0));
-            }
-        })
-        .catch(function(err){
-            console.log(err);
-        });
-    } else {
-        console.log("fill out the blank");
-        res.status(400).send("<script>alert('값을 입력하지 않음'); history.go(-1)</script>");
-    }
-    
-}
-
-function passwordCheck (req, res) {
-    const password = req.body.password;
-    const password2 = req.body.password2;
-
-    if (password && password2) {
-        if (password === password2) {
-            const re = /^[0-9a-zA-Z`~!@#$%^&*()-_=+?]{8,12}$/;
-            if (re.test(password)) {
-                res.status(200).send({
-                    "message": "",
-                    "success": true
-                })
-            } else {
-                res.status(400).send({
-                    "message": "비밀번호 형식이 잘못 되었습니다. 영문자, 숫자, 특수문자 8-12자로 입력해주세요",
-                    "success": false
-                })
-            }
-        } else {
-            res.status(400).send({
-                "message": "비밀번호가 다릅니다.",
-                "success": false
-            })
-        }
-    } else {
-        res.status(400).send({
-            "message": "비밀번호가 입력되지 않았습니다.",
-            "success": false
-        })
-    }
-}
 
 export default {
-    registerProcess,
-    idCheck,
-    passwordCheck
+    registerProcess
 }
