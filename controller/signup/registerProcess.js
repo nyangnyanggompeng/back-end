@@ -4,7 +4,6 @@ import bcrypt from 'bcrypt';
 const saltRounds = 10;
 
 function registerProcess(req, res) {
-  res.header('Access-Control-Allow-Origin', '*');
   const username = req.body.username;
   const domain = req.body.domain;
   const password = req.body.password;
