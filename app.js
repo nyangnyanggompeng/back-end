@@ -20,7 +20,6 @@ db.sequelize
     console.log(err);
   });
 
-
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(
@@ -30,11 +29,7 @@ app.use(
 );
 
 // app.use(cookieParser(process.env.SECERET_COOKIE))
-app.use(
-  cors({
-    orogin: '*'
-  })
-);
+app.use(cors({ credentials: true, origin: 'http://localhost:5173/' }));
 
 app.use('/api', indexRouter);
 
