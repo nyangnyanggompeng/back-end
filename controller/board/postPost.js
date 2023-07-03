@@ -5,7 +5,7 @@ import models from '../../models/index.js';
 const postPost = async (req, res, next) => {
   try {
     const userId = Number(req.params.user_id);
-    const { title, content, writer } = req.body;
+    const { title, content } = req.body;
 
     const User = await models.User.findOne({
       where: { id: userId }
@@ -26,11 +26,11 @@ const postPost = async (req, res, next) => {
     if (Post) {
       res.status(200).json(Post);
     } else {
-      res.status(400);
+      res.status(400).send('400 Bad Request');
     }
   } catch (err) {
     console.log(err);
-    res.status(400);
+    res.status(400).send('400 Bad Request');
   }
 };
 

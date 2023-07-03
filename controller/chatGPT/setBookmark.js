@@ -14,12 +14,13 @@ const setBookmark = async (req, res, next) => {
       { where: { id: contentId } }
     );
     if (bookmark[0] == 1) {
-      res.send('success');
+      res.status(200).send('200 OK');
     } else {
-      res.send('fail');
+      res.stuats(400).send('400 Bad Request');
     }
   } catch (err) {
     console.log(err);
+    res.status(400).send('400 Bad Reqeust');
   }
 };
 

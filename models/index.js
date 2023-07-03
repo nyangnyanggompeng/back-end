@@ -96,12 +96,12 @@ db.Comment.belongsTo(db.User, {
 
 // Post - Comment
 db.Post.hasMany(db.Comment, {
-  foreignKey: 'list_id',
+  foreignKey: 'post_id',
   targetKey: 'id',
   onDelete: 'cascade'
 });
 db.Comment.belongsTo(db.Post, {
-  foreignKey: 'list_id',
+  foreignKey: 'post_id',
   targetKey: 'id',
   onDelete: 'cascade'
 });
