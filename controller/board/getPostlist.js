@@ -12,6 +12,14 @@ const getPostlist = async (req, res, next) => {
     }
 
     const Post = await models.Post.findAll({
+      attributes: [
+        'id',
+        'writer',
+        'title',
+        'num_of_comment',
+        'updatedAt',
+        'user_id'
+      ],
       order: [['createdAt', 'desc']],
       offset: offset,
       limit: 10
