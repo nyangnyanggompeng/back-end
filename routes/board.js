@@ -16,6 +16,8 @@ import deleteComment from '../controller/board/deleteComment.js';
 
 import getMypost from '../controller/board/getMypost.js';
 import getMycomment from '../controller/board/getMycomment.js';
+import deleteMyposts from '../controller/board/deleteMyposts.js';
+import deleteMycomments from '../controller/board/deleteMycomments.js';
 
 const router = express.Router();
 
@@ -32,7 +34,9 @@ router.post('/:post_id/comments/:user_id', postComment); // localhost:5000/api/b
 router.patch('/:post_id/comments/:comment_id', updateComment); // localhost:5000/api/board/:post_id/comments/:comment_id
 router.put('/:post_id/comments/:comment_id', deleteComment); // localhost:5000/api/board/:post_id/comments/:comment_id
 
-router.get('/mypage/:user_id/posts', getMypost); // localhost:5000/api/board/:user_id/posts
-router.get('/mypage/:user_id/comments', getMycomment); // localhost:5000/api/board/:user_id/comments
+router.get('/mypage/:user_id/posts/:page_num', getMypost); // localhost:5000/api/board/:user_id/posts
+router.get('/mypage/:user_id/comments/:page_num', getMycomment); // localhost:5000/api/board/:user_id/comments
+router.put('/mypage/posts', deleteMyposts); // localhost:5000/api/board/:user_id/posts
+router.put('/mypage/comments', deleteMycomments); // localhost:5000/api/board/:user_id/comments
 
 export default router;
