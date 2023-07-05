@@ -13,9 +13,9 @@ const getMypost = async (req, res, next) => {
     }
 
     const Post = await models.Post.findAll({
-      attributes: ['id', 'writer', 'title', 'content', 'updatedAt'],
+      attributes: ['id', 'writer', 'title', 'content', 'createdAt'],
       where: {
-        user_id: userId
+        userId: userId
       },
       order: [['createdAt', 'desc']],
       offset: offset,
@@ -29,8 +29,7 @@ const getMypost = async (req, res, next) => {
       res.status(400).send('400 Bad Request');
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

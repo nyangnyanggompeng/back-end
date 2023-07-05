@@ -15,7 +15,7 @@ const postPost = async (req, res, next) => {
     const nickname = User.nickname;
 
     const Post = await models.Post.create({
-      user_id: `${userId}`, // Foreign Key
+      userId: `${userId}`, // Foreign Key
       isAdmin: isAdmin,
       title: title,
       content: content,
@@ -29,8 +29,7 @@ const postPost = async (req, res, next) => {
       res.status(400).send('400 Bad Request');
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

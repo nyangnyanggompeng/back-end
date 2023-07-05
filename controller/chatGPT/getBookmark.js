@@ -12,7 +12,7 @@ const getContent = async (req, res, next) => {
 
     const List = await models.ChatGPTList.findAll({
       attributes: ['id'],
-      where: { user_id: userId }
+      where: { userId: userId }
     });
 
     // console.log('list count = ', List.length);
@@ -21,7 +21,7 @@ const getContent = async (req, res, next) => {
     for (let i = 0; i < List.length; i++) {
       Content.push(
         await models.ChatGPTContent.findAll({
-          where: { bookmark: true, list_id: List[i].dataValues.id }
+          where: { bookmark: true, listId: List[i].dataValues.id }
         })
       );
     }
@@ -32,8 +32,7 @@ const getContent = async (req, res, next) => {
       res.status(400).send('400 Bad Request');
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

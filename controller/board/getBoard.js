@@ -9,7 +9,7 @@ const getBoard = async (req, res, next) => {
       where: { id: postId }
     });
     const Comment = await models.Comment.findAll({
-      where: { post_id: postId }
+      where: { postId: postId }
     });
 
     // 결과를 API POST의 결과로 return
@@ -23,8 +23,7 @@ const getBoard = async (req, res, next) => {
       res.status(400).send('400 Bad Request');
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

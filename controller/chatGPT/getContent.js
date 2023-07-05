@@ -7,7 +7,7 @@ const getContent = async (req, res, next) => {
     const listId = Number(req.params.list_id);
 
     const Content = await models.ChatGPTContent.findAll({
-      where: { list_id: listId }
+      where: { listId: listId }
     });
 
     if (Content) {
@@ -16,8 +16,7 @@ const getContent = async (req, res, next) => {
       res.status(400).send('400 Bad Request');
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

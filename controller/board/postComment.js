@@ -17,20 +17,20 @@ const postComment = async (req, res, next) => {
     });
 
     const Comment = await models.Comment.create({
-      user_id: `${userId}`, // Foreign Key
+      userId: `${userId}`, // Foreign Key
       isAdmin: User.isAdmin,
-      post_id: `${postId}`,
+      postId: `${postId}`,
       writer: User.nickname,
       content: content
     });
 
     // 결과를 API POST의 결과로 return
     if (Comment) {
-      const num = Post.num_of_comment + 1;
+      const num = Post.numOfComment + 1;
       console.log(num);
       await models.Post.update(
         {
-          num_of_comment: num
+          numOfComment: num
         },
         { where: { id: postId } }
       );
@@ -39,8 +39,7 @@ const postComment = async (req, res, next) => {
       res.status(400).send('400 Bad Request');
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

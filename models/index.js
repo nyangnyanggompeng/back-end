@@ -28,36 +28,36 @@ db.Comment = Comment(sequelize, Sequelize);
 
 // User - ChatGPTList
 db.User.hasMany(db.ChatGPTList, {
-  foreignKey: 'user_id',
+  foreignKey: 'userId',
   sourceKey: 'id',
   onDelete: 'cascade'
 });
 db.ChatGPTList.belongsTo(db.User, {
-  foreignKey: 'user_id',
+  foreignKey: 'userId',
   targetKey: 'id',
   onDelete: 'cascade'
 });
 
 // ChatGPTList - ChatGPTContent
 db.ChatGPTList.hasMany(db.ChatGPTContent, {
-  foreignKey: 'list_id',
+  foreignKey: 'listId',
   sourceKey: 'id',
   onDelete: 'cascade'
 });
 db.ChatGPTContent.belongsTo(db.ChatGPTList, {
-  foreignKey: 'list_id',
+  foreignKey: 'listId',
   targetKey: 'id',
   onDelete: 'cascade'
 });
 
 // User - Post
 db.User.hasMany(db.Post, {
-  foreignKey: 'user_id',
+  foreignKey: 'userId',
   targetKey: 'id',
   onDelete: 'cascade'
 });
 db.Post.belongsTo(db.User, {
-  foreignKey: 'user_id',
+  foreignKey: 'userId',
   targetKey: 'id',
   onDelete: 'cascade'
 });
@@ -74,12 +74,12 @@ db.Post.belongsTo(db.User, {
 
 // User - Comment
 db.User.hasMany(db.Comment, {
-  foreignKey: 'user_id',
+  foreignKey: 'userId',
   targetKey: 'id',
   onDelete: 'cascade'
 });
 db.Comment.belongsTo(db.User, {
-  foreignKey: 'user_id',
+  foreignKey: 'userId',
   targetKey: 'id',
   onDelete: 'cascade'
 });
@@ -96,12 +96,12 @@ db.Comment.belongsTo(db.User, {
 
 // Post - Comment
 db.Post.hasMany(db.Comment, {
-  foreignKey: 'post_id',
+  foreignKey: 'postId',
   targetKey: 'id',
   onDelete: 'cascade'
 });
 db.Comment.belongsTo(db.Post, {
-  foreignKey: 'post_id',
+  foreignKey: 'postId',
   targetKey: 'id',
   onDelete: 'cascade'
 });

@@ -2,7 +2,7 @@ const ChatGPTContent = (sequelize, DataTypes) => {
   const ChatGPTContent = sequelize.define(
     'ChatGPTContent',
     {
-      question_num: {
+      questionNum: {
         type: DataTypes.INTEGER,
         defaultValue: 0
       },

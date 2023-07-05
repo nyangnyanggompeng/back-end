@@ -16,9 +16,9 @@ const getPostlist = async (req, res, next) => {
         'id',
         'writer',
         'title',
-        'num_of_comment',
-        'updatedAt',
-        'user_id'
+        'numOfComment',
+        'createdAt',
+        'userId'
       ],
       order: [['createdAt', 'desc']],
       offset: offset,
@@ -32,8 +32,7 @@ const getPostlist = async (req, res, next) => {
       res.status(400).send('400 Bad Request');
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

@@ -16,8 +16,7 @@ const deleteList = async (req, res, next) => {
     // 결과를 API POST의 결과로 return
     res.status(200).send('200 OK');
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

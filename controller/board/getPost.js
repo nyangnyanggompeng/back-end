@@ -8,7 +8,7 @@ const getPost = async (req, res, next) => {
 
     // id / writer / title / content / createdAt / user_id
     const Post = await models.Post.findOne({
-      attributes: ['id', 'writer', 'title', 'content', 'updatedAt', 'user_id'],
+      attributes: ['id', 'writer', 'title', 'content', 'createdAt', 'userId'],
       where: { id: postId }
     });
 
@@ -19,8 +19,7 @@ const getPost = async (req, res, next) => {
       res.status(400);
     }
   } catch (err) {
-    console.log(err);
-    res.status(400);
+    next(err);
   }
 };
 

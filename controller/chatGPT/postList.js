@@ -10,7 +10,7 @@ const postList = async (req, res, next) => {
     // 대화목록 개수 계산하기
     const count = await models.ChatGPTList.findAndCountAll({
       where: {
-        user_id: userId
+        userId: userId
       }
     });
 
@@ -18,11 +18,11 @@ const postList = async (req, res, next) => {
       res.status(400).send('대화목록을 더 이상 만들 수 없습니다.');
     } else {
       const duplication = await models.ChatGPTList.findAll({
-        where: { user_id: userId, name: listName }
+        where: { userId: userId, name: listName }
       });
       if (duplication.length === 0) {
         const List = await models.ChatGPTList.create({
-          user_id: `${userId}`, // Foreign Key
+          userId: `${userId}`, // Foreign Key
           name: listName
         });
         // 결과를 API POST의 결과로 return
@@ -32,8 +32,7 @@ const postList = async (req, res, next) => {
       }
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

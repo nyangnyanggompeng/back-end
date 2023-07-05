@@ -52,14 +52,15 @@ app.use(
 );
 
 app.use((req, res, next) => {
-  const error = new Error(`${req.method} ${req.url} 찾을 수 없음`);
-  error.status = 404;
-  next(error);
+  const err = new Error(`${req.method} ${req.url} 찾을 수 없음`);
+  err.status = 404;
+  next(err);
 });
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
-  res.send(err.message);
+  res.send(`[Error] ${err}`);
+  // res.send(`${err.status} Error`);
 });
 
 app.listen(process.env.PORT || 3000, () => {

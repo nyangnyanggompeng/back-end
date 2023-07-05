@@ -14,8 +14,8 @@ const getComment = async (req, res, next) => {
 
     // id / writer / title / content / createdAt / user_id
     const Comment = await models.Comment.findAll({
-      attributes: ['id', 'writer', 'content', 'updatedAt', 'user_id'],
-      where: { post_id: postId },
+      attributes: ['id', 'writer', 'content', 'createdAt', 'userId'],
+      where: { postId: postId },
       offset: offset,
       limit: 10
     });
@@ -27,8 +27,7 @@ const getComment = async (req, res, next) => {
       res.status(400);
     }
   } catch (err) {
-    console.log(err);
-    res.status(400);
+    next(err);
   }
 };
 

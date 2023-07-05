@@ -7,7 +7,7 @@ const getList = async (req, res, next) => {
     const userId = Number(req.params.user_id);
 
     const List = await models.ChatGPTList.findAll({
-      where: { user_id: userId }
+      where: { userId: userId }
     });
 
     if (List) {
@@ -16,8 +16,7 @@ const getList = async (req, res, next) => {
       res.status(400).send('400 Bad Request');
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

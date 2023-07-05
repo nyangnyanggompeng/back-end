@@ -2,7 +2,7 @@
 // chatGPT에게 메시지를 보낼 때
 import models from '../../models/index.js';
 import callChatGPT from '../../middleware/chatgpt.js';
-import { resourceLimits } from 'worker_threads';
+// import { resourceLimits } from 'worker_threads';
 
 const postContent = async (req, res, next) => {
   try {
@@ -27,7 +27,7 @@ const postContent = async (req, res, next) => {
       console.log('content = ', content);
       // 기존 메시지가 존재하지 않는다고 가정
       await models.ChatGPTContent.create({
-        list_id: `${listId}`,
+        listId: `${listId}`,
         sender: 'user',
         content: content
       });
@@ -43,16 +43,16 @@ const postContent = async (req, res, next) => {
           if (list[i]) {
             console.log('list[i][0] = ', list[i][0]); // 숫자나옴
             ChatGPTContent = await models.ChatGPTContent.create({
-              list_id: `${listId}`,
+              listId: `${listId}`,
               sender: 'assistant',
               content: list[i],
-              question_num: i + 1
+              questionNum: i + 1
             });
           }
         }
       } else {
         ChatGPTContent = await models.ChatGPTContent.create({
-          list_id: `${listId}`,
+          listId: `${listId}`,
           sender: 'assistant',
           content: response.content
         });
@@ -67,7 +67,7 @@ const postContent = async (req, res, next) => {
           { where: { id: listId } }
         );
         ChatGPTContent = await models.ChatGPTContent.findAll({
-          where: { list_id: listId, sender: 'assistant' }
+          where: { listId: listId, sender: 'assistant' }
         });
         res.status(200).json(ChatGPTContent);
       } else {
@@ -75,8 +75,7 @@ const postContent = async (req, res, next) => {
       }
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

@@ -14,10 +14,10 @@ const deleteComment = async (req, res, next) => {
 
     // 결과를 API POST의 결과로 return
     if (Comment) {
-      const num = Post.num_of_comment - 1;
+      const num = Post.numOfComment - 1;
       await models.Post.update(
         {
-          num_of_comment: num
+          numOfComment: num
         },
         { where: { id: postId } }
       );
@@ -26,8 +26,7 @@ const deleteComment = async (req, res, next) => {
       res.status(400).send('400 Bad Request');
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

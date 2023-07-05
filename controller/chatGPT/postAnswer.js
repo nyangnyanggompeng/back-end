@@ -15,8 +15,8 @@ const postAnswer = async (req, res, next) => {
     const question = await models.ChatGPTContent.findAll({
       attributes: ['content'],
       where: {
-        list_id: listId,
-        question_num: questionNum
+        listId: listId,
+        questionNum: questionNum
       }
     });
 
@@ -32,20 +32,20 @@ const postAnswer = async (req, res, next) => {
     console.log('content = ', content);
 
     await models.ChatGPTContent.create({
-      list_id: `${listId}`,
+      listId: `${listId}`,
       sender: 'user',
       content: content,
-      question_num: questionNum
+      questionNum: questionNum
     });
 
     // 이후 middleware/chatgpt 실행
     const response = await callChatGPT(content);
 
     const Content = await models.ChatGPTContent.create({
-      list_id: `${listId}`,
+      listId: `${listId}`,
       sender: 'assistant',
       content: response.content,
-      question_num: questionNum
+      questionNum: questionNum
     });
 
     if (Content) {
@@ -54,8 +54,7 @@ const postAnswer = async (req, res, next) => {
       res.status(400).send('400 Bad Request');
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 

@@ -13,9 +13,9 @@ const getMycomment = async (req, res, next) => {
     }
 
     const Comment = await models.Comment.findAll({
-      attributes: ['id', 'writer', 'content', 'updatedAt', 'post_id'],
+      attributes: ['id', 'writer', 'content', 'createdAt', 'postId'],
       where: {
-        user_id: userId
+        userId: userId
       },
       order: [['createdAt', 'desc']],
       offset: offset,
@@ -29,8 +29,7 @@ const getMycomment = async (req, res, next) => {
       res.status(400).send('400 Bad Request');
     }
   } catch (err) {
-    console.log(err);
-    res.status(400).send('400 Bad Request');
+    next(err);
   }
 };
 
