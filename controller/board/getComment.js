@@ -1,16 +1,23 @@
-// GET /board/:post_id/comment
+// GET /board/:post_id/comment/:page_num
 // 댓글 조회
-import Sequelize from 'sequelize';
 import models from '../../models/index.js';
 
 const getComment = async (req, res, next) => {
   try {
     const postId = Number(req.params.post_id);
+    const pageNum = Number(req.params.page_num);
+    let offset;
+
+    if (pageNum > 1) {
+      offset = 10 * (pageNum - 1);
+    }
 
     // id / writer / title / content / createdAt / user_id
     const Comment = await models.Comment.findAll({
       attributes: ['id', 'writer', 'content', 'updatedAt', 'user_id'],
-      where: { post_id: postId }
+      where: { post_id: postId },
+      offset: offset,
+      limit: 10
     });
 
     // 결과를 API POST의 결과로 return
