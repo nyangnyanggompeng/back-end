@@ -8,6 +8,7 @@ import db from './models/index.js';
 dotenv.config();
 
 const domains = ['http://localhost:5173'];
+// const domains = ['*'];
 
 const app = express();
 app.set('view engine', 'ejs'); // view 엔진을 ejs를 쓰겠다는 설정
@@ -45,7 +46,7 @@ app.use(cors(corsOptions));
 app.use(
   '/api',
   (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
     next();
   },
   indexRouter
