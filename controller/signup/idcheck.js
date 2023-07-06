@@ -11,12 +11,12 @@ async function idCheck (req, res) {
         });
 
         if (users.length === 0) { // 사용가능 이메일
-            res.status(200).send('사용가능한 이메일');
+            res.status(200).send('AVAILABLE_EMAIL');
         } else { // 사용불가 이메일
-            res.status(400).send('이미 사용중인 이메일');
+            res.status(400).send('EMAIL_ALREADY_EXISTS');
         }
     } else {
-        res.status(400).send("입력값 없음");
+        res.status(400).send("EMAIL_NO_ENTERED");
     }
     
 }

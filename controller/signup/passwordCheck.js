@@ -8,28 +8,16 @@ function passwordCheck (req, res) {
     if (password && passwordVerify) {
         if (password === passwordVerify) {
             const re = /^[0-9a-zA-Z`~!@#$%^&*()-_=+?]{8,12}$/;
-            if (re.test(password)) {
-                res.status(200).send({
-                    "message": "",
-                    "success": true
-                })
-            } else {
-                res.status(400).send({
-                    "message": "비밀번호 형식이 잘못 되었습니다. 영문자, 숫자, 특수문자 8-12자로 입력해주세요",
-                    "success": false
-                })
+            if (re.test(password)) { // success
+                res.status(200).send("VAILD_PASSWORD");
+            } else { // 비밀번호 형식이 잘못 되었습니다. 영문자, 숫자, 특수문자 8-12자로 입력해주세요
+                res.status(400).send("INVALID_FORM");
             }
-        } else {
-            res.status(400).send({
-                "message": "비밀번호가 다릅니다.",
-                "success": false
-            })
+        } else { // 비밀번호 다름
+            res.status(400).send("PASSWORDS_NOT_MATCH")
         }
-    } else {
-        res.status(400).send({
-            "message": "비밀번호가 입력되지 않았습니다.",
-            "success": false
-        })
+    } else { // 필수 값 누락
+        res.status(400).send("PASSWORDS_NOT_ENTERED")
     }
 }
 

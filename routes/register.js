@@ -8,7 +8,7 @@ import nicknameCheck from '../controller/signup/nicknameCheck.js';
 const router = express.Router();
 
 router.get('/', (req, res) => {
-    res.render('signup', {}); // views 폴더 밑에 있는 파일을 참조함
+    res.render('register', {}); // views 폴더 밑에 있는 파일을 참조함
 });
 
 router.post('/register_process', register.registerProcess);

@@ -10,12 +10,12 @@ async function nicknameCheck (req, res) {
         });
 
         if (users.length === 0) { // 닉네임 사용가능
-            res.status(200).send('사용가능한 닉네임');
+            res.status(200).send('AVAILABLE_NICKNAME');
         } else { // 닉네임 사용불가
-            res.status(400).send('이미 사용중인 닉네임');
+            res.status(400).send('NICKNAME_ALREADY_EXISTS');
         }
     } else { // 닉네임 입력하지 않음
-        res.status(400).send('입력값 없음');
+        res.status(400).send('NICKNAME_NO_ENTERED');
     }
 }
 
