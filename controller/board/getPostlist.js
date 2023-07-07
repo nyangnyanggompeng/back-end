@@ -5,7 +5,13 @@ import models from '../../models/index.js';
 const getPostlist = async (req, res, next) => {
   try {
     const pageNum = Number(req.params.page_num);
+    const numberOfPost = await models.Post.count();
     let offset;
+
+    let totalPages = parseInt(numberOfPost / 10);
+    if (numberOfPost % 10 > 0) {
+      totalPages += 1;
+    }
 
     if (pageNum > 1) {
       offset = 10 * (pageNum - 1);
@@ -25,14 +31,9 @@ const getPostlist = async (req, res, next) => {
       limit: 10
     });
 
-    // 결과를 API POST의 결과로 return
-    if (Post) {
-      res.status(200).json(Post);
-    } else {
-      res.status(400).send('400 Bad Request');
-    }
+    return res.status(200).json({ Post, numberOfPost, totalPages });
   } catch (err) {
-    next(err);
+    return res.status(500).send('GET_POST_LIST_FAILURE');
   }
 };
 

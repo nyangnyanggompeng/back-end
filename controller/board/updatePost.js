@@ -7,7 +7,11 @@ const updatePost = async (req, res, next) => {
     const postId = Number(req.params.post_id);
     const { title, content } = req.body;
 
-    const Post = await models.Post.update(
+    if (!title || !content) {
+      return res.status(400).send('TITLE_OR_CONTENT_NO_ENTERED');
+    }
+
+    await models.Post.update(
       {
         title: title,
         content: content
@@ -15,14 +19,9 @@ const updatePost = async (req, res, next) => {
       { where: { id: postId } }
     );
 
-    // 결과를 API POST의 결과로 return
-    if (Post) {
-      res.status(200).send('200 OK');
-    } else {
-      res.status(400).send('400 Bad Request');
-    }
+    return res.status(200).send('UPDATE_POST_SUCCESS');
   } catch (err) {
-    next(err);
+    return res.status(500).send('UPDATE_POST_FAILURE');
   }
 };
 

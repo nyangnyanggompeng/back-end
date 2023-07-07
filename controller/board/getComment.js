@@ -8,6 +8,15 @@ const getComment = async (req, res, next) => {
     const pageNum = Number(req.params.page_num);
     let offset;
 
+    const numberOfComment = await models.Comment.count({
+      where: { postId: postId }
+    });
+
+    let totalPages = parseInt(numberOfComment / 10);
+    if (numberOfComment % 10 > 0) {
+      totalPages += 1;
+    }
+
     if (pageNum > 1) {
       offset = 10 * (pageNum - 1);
     }
@@ -20,14 +29,9 @@ const getComment = async (req, res, next) => {
       limit: 10
     });
 
-    // 결과를 API POST의 결과로 return
-    if (Comment) {
-      res.status(200).send(Comment);
-    } else {
-      res.status(400);
-    }
+    return res.status(200).json({ Comment, numberOfComment, totalPages });
   } catch (err) {
-    next(err);
+    return res.status(500).send('GET_COMMENT_FAILURE');
   }
 };
 

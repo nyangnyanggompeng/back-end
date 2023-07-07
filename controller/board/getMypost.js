@@ -8,6 +8,17 @@ const getMypost = async (req, res, next) => {
     const pageNum = Number(req.params.page_num);
     let offset;
 
+    const numberOfMyPost = await models.Post.count({
+      where: {
+        userId: userId
+      }
+    });
+
+    let totalPages = parseInt(numberOfMyPost / 10);
+    if (numberOfMyPost % 10 > 0) {
+      totalPages += 1;
+    }
+
     if (pageNum > 1) {
       offset = 10 * (pageNum - 1);
     }
@@ -22,14 +33,9 @@ const getMypost = async (req, res, next) => {
       limit: 10
     });
 
-    // 결과를 API POST의 결과로 return
-    if (Post) {
-      res.status(200).json(Post);
-    } else {
-      res.status(400).send('400 Bad Request');
-    }
+    return res.status(200).json({ Post, numberOfMyPost, totalPages });
   } catch (err) {
-    next(err);
+    return res.status(500).send('GET_MY_POST_FAILURE');
   }
 };
 

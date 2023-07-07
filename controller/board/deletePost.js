@@ -6,16 +6,11 @@ const deletePost = async (req, res, next) => {
   try {
     const postId = Number(req.params.post_id);
 
-    const Post = await models.Post.destroy({ where: { id: postId } });
+    await models.Post.destroy({ where: { id: postId } });
 
-    // 결과를 API POST의 결과로 return
-    if (Post) {
-      res.status(200).send('200 OK');
-    } else {
-      res.status(400).send('400 Bad Request');
-    }
+    return res.status(200).send('DELETE_POST_SUCCESS');
   } catch (err) {
-    next(err);
+    return res.status(500).send('DELETE_POST_FAILURE');
   }
 };
 

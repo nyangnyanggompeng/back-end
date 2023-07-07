@@ -4,25 +4,23 @@ import models from '../../models/index.js';
 
 const updatePost = async (req, res, next) => {
   try {
-    // const postId = Number(req.params.post_id);
     const commentId = Number(req.params.comment_id);
     const { content } = req.body;
 
-    const Comment = await models.Comment.update(
+    if (!content) {
+      return res.status(400).send('CONTENT_NO_ENTERED');
+    }
+
+    await models.Comment.update(
       {
         content: content
       },
       { where: { id: commentId } }
     );
 
-    // 결과를 API POST의 결과로 return
-    if (Comment) {
-      res.status(200).send('200 Ok');
-    } else {
-      res.status(400).send('400 Bad Request');
-    }
+    return res.status(200).send('UPDATE_COMMENT_SUCCESS');
   } catch (err) {
-    next(err);
+    return res.status(500).send('UPDATE_COMMENT_FAILURE');
   }
 };
 

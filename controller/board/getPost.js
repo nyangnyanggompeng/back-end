@@ -12,14 +12,9 @@ const getPost = async (req, res, next) => {
       where: { id: postId }
     });
 
-    // 결과를 API POST의 결과로 return
-    if (Post) {
-      res.status(200).send(Post);
-    } else {
-      res.status(400);
-    }
+    return res.status(200).json(Post);
   } catch (err) {
-    next(err);
+    return res.status(500).send('GET_POST_FAILURE');
   }
 };
 
