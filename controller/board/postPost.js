@@ -5,7 +5,12 @@ import models from '../../models/index.js';
 const postPost = async (req, res, next) => {
   try {
     const userId = Number(req.params.user_id);
+    //const userId = req.decoded.id;
     const { title, content } = req.body;
+
+    if (!title || !content) {
+      return res.status(400).send('TITLE_OR_CONTENT_NO_ENTERED');
+    }
 
     const User = await models.User.findOne({
       where: { id: userId }
@@ -14,7 +19,7 @@ const postPost = async (req, res, next) => {
     const isAdmin = User.isAdmin;
     const nickname = User.nickname;
 
-    const Post = await models.Post.create({
+    await models.Post.create({
       userId: `${userId}`, // Foreign Key
       isAdmin: isAdmin,
       title: title,
@@ -22,14 +27,9 @@ const postPost = async (req, res, next) => {
       writer: nickname
     });
 
-    // 결과를 API POST의 결과로 return
-    if (Post) {
-      res.status(200).json(Post);
-    } else {
-      res.status(400).send('400 Bad Request');
-    }
+    return res.status(200).send('POST_POST_SUCCESS');
   } catch (err) {
-    next(err);
+    return res.status(500).send('POST_POST_FAILURE');
   }
 };
 

@@ -8,6 +8,10 @@ const postComment = async (req, res, next) => {
     const userId = Number(req.params.user_id);
     const { content } = req.body;
 
+    if (!content) {
+      return res.status(400).send('CONTENT_NO_ENTERED');
+    }
+
     const User = await models.User.findOne({
       where: { id: userId }
     });
@@ -16,7 +20,7 @@ const postComment = async (req, res, next) => {
       where: { id: postId }
     });
 
-    const Comment = await models.Comment.create({
+    await models.Comment.create({
       userId: `${userId}`, // Foreign Key
       isAdmin: User.isAdmin,
       postId: `${postId}`,
@@ -24,22 +28,17 @@ const postComment = async (req, res, next) => {
       content: content
     });
 
-    // 결과를 API POST의 결과로 return
-    if (Comment) {
-      const num = Post.numOfComment + 1;
-      console.log(num);
-      await models.Post.update(
-        {
-          numOfComment: num
-        },
-        { where: { id: postId } }
-      );
-      res.status(200).json(Comment);
-    } else {
-      res.status(400).send('400 Bad Request');
-    }
+    const num = Post.numOfComment + 1;
+    await models.Post.update(
+      {
+        numOfComment: num
+      },
+      { where: { id: postId } }
+    );
+
+    return res.status(200).send('POST_COMMENT_SUCCESS');
   } catch (err) {
-    next(err);
+    return res.status(500).send('POST_COMMENT_FAILURE');
   }
 };
 

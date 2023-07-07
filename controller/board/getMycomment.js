@@ -1,5 +1,5 @@
-// PUT /board/posts
-// 선택 댓글 삭제
+// GET /board/mypage/:user_id/comments/:page_num
+// 내가 쓴 댓글 조회
 import models from '../../models/index.js';
 
 const getMycomment = async (req, res, next) => {
@@ -7,6 +7,17 @@ const getMycomment = async (req, res, next) => {
     const userId = Number(req.params.user_id);
     const pageNum = Number(req.params.page_num);
     let offset;
+
+    const numberOfMyComment = await models.Comment.count({
+      where: {
+        userId: userId
+      }
+    });
+
+    let totalPages = parseInt(numberOfMyComment / 10);
+    if (numberOfMyComment % 10 > 0) {
+      totalPages += 1;
+    }
 
     if (pageNum > 1) {
       offset = 10 * (pageNum - 1);
@@ -22,14 +33,9 @@ const getMycomment = async (req, res, next) => {
       limit: 10
     });
 
-    // 결과를 API POST의 결과로 return
-    if (Comment) {
-      res.status(200).json(Comment);
-    } else {
-      res.status(400).send('400 Bad Request');
-    }
+    return res.status(200).json({ Comment, numberOfMyComment, totalPages });
   } catch (err) {
-    next(err);
+    return res.status(500).send('GET_MY_COMMENT_FAILURE');
   }
 };
 

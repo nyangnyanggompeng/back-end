@@ -10,23 +10,19 @@ const deleteComment = async (req, res, next) => {
     const Post = await models.Post.findOne({
       where: { id: postId }
     });
-    const Comment = await models.Comment.destroy({ where: { id: commentId } });
+    await models.Comment.destroy({ where: { id: commentId } });
 
-    // 결과를 API POST의 결과로 return
-    if (Comment) {
-      const num = Post.numOfComment - 1;
-      await models.Post.update(
-        {
-          numOfComment: num
-        },
-        { where: { id: postId } }
-      );
-      res.status(200).json(Comment);
-    } else {
-      res.status(400).send('400 Bad Request');
-    }
+    const num = Post.numOfComment - 1;
+    await models.Post.update(
+      {
+        numOfComment: num
+      },
+      { where: { id: postId } }
+    );
+
+    return res.status(200).send('DELETE_COMMENT_SUCCESS');
   } catch (err) {
-    next(err);
+    return res.status(500).send('DELETE_COMMENT_FAILURE');
   }
 };
 
