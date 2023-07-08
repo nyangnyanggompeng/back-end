@@ -30,7 +30,8 @@ async function registerProcess (req, res) {
                             domain: domain,
                             password: encryptedPW,
                             nickname: nickname,
-                            auth_email: false
+                            auth_email: false,
+                            useStatus: 1
                         });
                         return res.status(200).send("USER_CREATED");
                     } else { // 사용불가 닉네임
