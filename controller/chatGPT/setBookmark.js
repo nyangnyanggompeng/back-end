@@ -7,19 +7,16 @@ const setBookmark = async (req, res, next) => {
     const contentId = Number(req.params.content_id);
     const status = req.query.isBookmarked;
 
-    const bookmark = await models.ChatGPTContent.update(
+    await models.ChatGPTContent.update(
       {
         bookmark: status
       },
       { where: { id: contentId } }
     );
-    if (bookmark[0] == 1) {
-      res.status(200).send('200 OK');
-    } else {
-      res.stuats(400).send('400 Bad Request');
-    }
+
+    return res.status(200).send('SET_BOOKMARK_SUCCESS');
   } catch (err) {
-    next(err);
+    return res.status(500).send('sET_BOOKMARK_FAILURE');
   }
 };
 

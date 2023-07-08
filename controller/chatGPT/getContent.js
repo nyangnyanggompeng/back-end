@@ -10,13 +10,9 @@ const getContent = async (req, res, next) => {
       where: { listId: listId }
     });
 
-    if (Content) {
-      res.status(200).json(Content);
-    } else {
-      res.status(400).send('400 Bad Request');
-    }
+    return res.status(200).json(Content);
   } catch (err) {
-    next(err);
+    return res.status(500).send('GET_CONTENT_FAILURE');
   }
 };
 

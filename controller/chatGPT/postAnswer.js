@@ -9,7 +9,10 @@ const postAnswer = async (req, res, next) => {
     const listId = Number(list_id);
     const questionNum = Number(question_num);
     const answer = req.body.answer;
-    console.log('listId = ', listId, ' / questionNum = ', questionNum);
+
+    if (!answer) {
+      return res.status(400).send('ANSWER_NO_ENTERED');
+    }
 
     // question_num에 맞는 질문 가져오기
     const question = await models.ChatGPTContent.findAll({
@@ -48,13 +51,9 @@ const postAnswer = async (req, res, next) => {
       questionNum: questionNum
     });
 
-    if (Content) {
-      res.status(200).json(Content);
-    } else {
-      res.status(400).send('400 Bad Request');
-    }
+    return res.status(200).json(Content);
   } catch (err) {
-    next(err);
+    return res.status(500).send('POST_ANSWER_FAILURE');
   }
 };
 

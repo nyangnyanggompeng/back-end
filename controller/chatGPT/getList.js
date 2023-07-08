@@ -5,18 +5,35 @@ import models from '../../models/index.js';
 const getList = async (req, res, next) => {
   try {
     const userId = Number(req.params.user_id);
+    const pageNum = Number(req.params.page_num);
+    let offset;
 
-    const List = await models.ChatGPTList.findAll({
-      where: { userId: userId }
+    const numberOfList = await models.ChatGPTList.count({
+      where: {
+        userId: userId
+      }
     });
 
-    if (List) {
-      res.status(200).json(List);
-    } else {
-      res.status(400).send('400 Bad Request');
+    let totalPages = parseInt(numberOfList / 10);
+    if (numberOfList % 10 > 0) {
+      totalPages += 1;
     }
+
+    if (pageNum > 1) {
+      offset = 10 * (pageNum - 1);
+    }
+
+    const List = await models.ChatGPTList.findAll({
+      attributes: ['id', 'name', 'type', 'createdAt'],
+      where: { userId: userId },
+      order: [['createdAt', 'desc']],
+      offset: offset,
+      limit: 10
+    });
+
+    return res.status(200).json({ List, numberOfList, totalPages });
   } catch (err) {
-    next(err);
+    return res.stauts(500).send('GET_LIST_FAILURE');
   }
 };
 
