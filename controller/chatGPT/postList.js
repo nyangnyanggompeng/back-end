@@ -7,32 +7,35 @@ const postList = async (req, res, next) => {
     const userId = Number(req.params.user_id);
     const listName = req.body.name;
 
+    if (!listName) {
+      return res.status(400).send('LIST_NAME_NO_ENTERED');
+    }
+
     // 대화목록 개수 계산하기
-    const count = await models.ChatGPTList.findAndCountAll({
+    const count = await models.ChatGPTList.count({
       where: {
         userId: userId
       }
     });
 
-    if (count.count >= 30) {
-      res.status(400).send('대화목록을 더 이상 만들 수 없습니다.');
+    if (count >= 30) {
+      res.status(400).send('UNABLE_TO_CREATE_LIST_ANYMORE');
     } else {
       const duplication = await models.ChatGPTList.findAll({
         where: { userId: userId, name: listName }
       });
       if (duplication.length === 0) {
-        const List = await models.ChatGPTList.create({
+        await models.ChatGPTList.create({
           userId: `${userId}`, // Foreign Key
           name: listName
         });
-        // 결과를 API POST의 결과로 return
-        res.status(200).json(List);
+        res.status(200).send('POST_LIST_SUCCESS');
       } else {
-        res.status(400).send('대화목록 이름이 이미 있습니다.');
+        res.status(400).send('LIST_NAME_ALREADY_EXISTS');
       }
     }
   } catch (err) {
-    next(err);
+    return res.status(500).send('POST_LIST_FAILURE');
   }
 };
 

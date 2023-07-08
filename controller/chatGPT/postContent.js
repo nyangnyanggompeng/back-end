@@ -9,8 +9,13 @@ const postContent = async (req, res, next) => {
     const listId = Number(req.params.list_id);
     const { prompt, type, count } = req.body;
     let content, ChatGPTContent;
+
+    if (!prompt || !type || !count) {
+      return res.status(400).send('PROMPT_OR_TYPE_OR_COUNT_NO_ENTERED');
+    }
+
     if (count > 10) {
-      res.status(400).send('질문의 개수가 너무 많습니다.');
+      res.status(400).send('TOO_MANY_QUESTIONS');
     } else {
       if (prompt) {
         content =
@@ -58,24 +63,20 @@ const postContent = async (req, res, next) => {
         });
       }
 
-      // 결과를 API POST의 결과로 return
-      if (ChatGPTContent) {
-        await models.ChatGPTList.update(
-          {
-            type: type
-          },
-          { where: { id: listId } }
-        );
-        ChatGPTContent = await models.ChatGPTContent.findAll({
-          where: { listId: listId, sender: 'assistant' }
-        });
-        res.status(200).json(ChatGPTContent);
-      } else {
-        res.status(400).send('400 Bad Request');
-      }
+      await models.ChatGPTList.update(
+        {
+          type: type
+        },
+        { where: { id: listId } }
+      );
+      ChatGPTContent = await models.ChatGPTContent.findAll({
+        where: { listId: listId, sender: 'assistant' }
+      });
+
+      return res.status(200).json(ChatGPTContent);
     }
   } catch (err) {
-    next(err);
+    return res.status(500).send('POST_CONTENT_FAILURE');
   }
 };
 
