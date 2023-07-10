@@ -9,7 +9,7 @@ const postPost = async (req, res, next) => {
     const { title, content } = req.body;
 
     if (!title || !content) {
-      return res.status(400).send('TITLE_OR_CONTENT_NO_ENTERED');
+      return res.status(400).send('TITLE_OR_CONTENT_NOT_ENTERED');
     }
 
     const User = await models.User.findOne({
@@ -29,7 +29,8 @@ const postPost = async (req, res, next) => {
 
     return res.status(200).send('POST_POST_SUCCESS');
   } catch (err) {
-    return res.status(500).send('POST_POST_FAILURE');
+    req.message = 'POST_POST';
+    next(err);
   }
 };
 

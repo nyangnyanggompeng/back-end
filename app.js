@@ -2,7 +2,6 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
-// import cookieParser from "cookie-parser";
 import indexRouter from './routes/index.js';
 import db from './models/index.js';
 dotenv.config();
@@ -60,7 +59,8 @@ app.use((req, res, next) => {
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
-  res.send(`[Error] ${err}`);
+  console.log(`[Error] ${err}`);
+  res.send(`${req.message}_FAILURE`);
   // res.send(`${err.status} Error`);
 });
 

@@ -1,11 +1,13 @@
-import express from 'express';
-import db from '../../models/index.js';
+import models from '../../models/index.js';
 
-async function userList (req, res) {
-    const users = await db.User.findAll();
-    res.status(200).send(users);
-}
+const userList = async (req, res, next) => {
+  try {
+    const users = await models.User.findAll();
+    return res.status(200).json(users);
+  } catch (err) {
+    req.message = 'GET_USERLIST';
+    next(err);
+  }
+};
 
-export default {
-    userList
-}
+export default userList;

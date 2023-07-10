@@ -7,7 +7,8 @@ const getBookmark = async (req, res, next) => {
     const userId = Number(req.params.user_id);
     const pageNum = Number(req.params.page_num);
     let ContentList = [];
-    let start, end;
+    let start = 0,
+      end = 0;
 
     const List = await models.ChatGPTList.findAll({
       attributes: ['id'],
@@ -39,7 +40,8 @@ const getBookmark = async (req, res, next) => {
     const Content = ContentList.slice(start, end);
     return res.status(200).json({ Content, numberOfContent, totalPages });
   } catch (err) {
-    return res.status(500).send('GET_BOOKMARK_FAILURE');
+    req.message = 'GET_BOOKMARK';
+    next(err);
   }
 };
 

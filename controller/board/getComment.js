@@ -31,7 +31,8 @@ const getComment = async (req, res, next) => {
 
     return res.status(200).json({ Comment, numberOfComment, totalPages });
   } catch (err) {
-    return res.status(500).send('GET_COMMENT_FAILURE');
+    req.message = 'GET_COMMENT';
+    next(err);
   }
 };
 

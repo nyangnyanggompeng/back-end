@@ -5,13 +5,12 @@ import callChatGPT from '../../middleware/chatgpt.js';
 
 const postAnswer = async (req, res, next) => {
   try {
-    const { list_id, question_num } = req.params;
-    const listId = Number(list_id);
-    const questionNum = Number(question_num);
-    const answer = req.body.answer;
+    const listId = Number(req.params.list_id);
+    const questionNum = Number(req.params.question_num);
+    const { answer } = req.body;
 
     if (!answer) {
-      return res.status(400).send('ANSWER_NO_ENTERED');
+      return res.status(400).send('ANSWER_NOT_ENTERED');
     }
 
     // question_num에 맞는 질문 가져오기
@@ -53,7 +52,8 @@ const postAnswer = async (req, res, next) => {
 
     return res.status(200).json(Content);
   } catch (err) {
-    return res.status(500).send('POST_ANSWER_FAILURE');
+    req.message = 'POST_ANSWER';
+    next(err);
   }
 };
 

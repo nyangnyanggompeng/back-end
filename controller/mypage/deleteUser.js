@@ -1,28 +1,30 @@
-import express from 'express';
-import db from '../../models/index.js';
+import models from '../../models/index.js';
 import bcrypt from 'bcrypt';
 
-async function deleteUser (req, res) {
+const deleteUser = async (req, res, next) => {
+  try {
     const id = req.params.id;
-    const password = req.body.password;
+    const { password } = req.body;
 
-    if (password) {
-        const users = await db.User.findAll({
-            where: {id: id}
-        });
-
-        const check = await bcrypt.compare(password, users[0].password);
-        if (!check) {
-            res.status(400).send("INVALID_PASSWORD");
-        } else {
-            users[0].update({ useStatus: 0 });
-            res.status(200).send("USER_DELETED");
-        }
+    if (!password) {
+      return res.status(400).send('PASSWORD_NOT_ENTERED');
     } else {
-        res.status(400).send("PASSWORD_NOT_ENTERED");
-    }
-}
+      const users = await models.User.findOne({
+        where: { id: id }
+      });
 
-export default {
-    deleteUser
-}
+      const check = await bcrypt.compare(password, users.password);
+      if (!check) {
+        return res.status(400).send('INVALID_PASSWORD');
+      } else {
+        await users.update({ useStatus: 0 });
+        return res.status(200).send('DELETE_USER_SUCCESS');
+      }
+    }
+  } catch (err) {
+    req.message = 'DELETE_USER';
+    next(err);
+  }
+};
+
+export default deleteUser;

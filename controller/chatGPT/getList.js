@@ -33,7 +33,8 @@ const getList = async (req, res, next) => {
 
     return res.status(200).json({ List, numberOfList, totalPages });
   } catch (err) {
-    return res.stauts(500).send('GET_LIST_FAILURE');
+    req.message = 'GET_LIST';
+    next(err);
   }
 };
 

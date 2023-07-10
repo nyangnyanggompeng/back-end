@@ -11,11 +11,11 @@ const postContent = async (req, res, next) => {
     let content, ChatGPTContent;
 
     if (!prompt || !type || !count) {
-      return res.status(400).send('PROMPT_OR_TYPE_OR_COUNT_NO_ENTERED');
+      return res.status(400).send('PROMPT_OR_TYPE_OR_COUNT_NOT_ENTERED');
     }
 
     if (count > 10) {
-      res.status(400).send('TOO_MANY_QUESTIONS');
+      return res.status(400).send('TOO_MANY_QUESTIONS');
     } else {
       if (prompt) {
         content =
@@ -45,13 +45,14 @@ const postContent = async (req, res, next) => {
         const list = response.content.split('\n');
         console.log('list : ', list);
         for (let i = 0; i < list.length; i++) {
-          if (list[i]) {
-            console.log('list[i][0] = ', list[i][0]); // 숫자나옴
+          if (!isNaN(list[i][0])) {
+            const quesiton = list[i].slice(3);
+            const number = Number(list[i][0]);
             ChatGPTContent = await models.ChatGPTContent.create({
               listId: `${listId}`,
               sender: 'assistant',
-              content: list[i],
-              questionNum: i + 1
+              content: quesiton,
+              questionNum: number
             });
           }
         }
@@ -76,7 +77,8 @@ const postContent = async (req, res, next) => {
       return res.status(200).json(ChatGPTContent);
     }
   } catch (err) {
-    return res.status(500).send('POST_CONTENT_FAILURE');
+    req.message = 'POST_CONTENT';
+    next(err);
   }
 };
 

@@ -33,7 +33,8 @@ const getPostlist = async (req, res, next) => {
 
     return res.status(200).json({ Post, numberOfPost, totalPages });
   } catch (err) {
-    return res.status(500).send('GET_POST_LIST_FAILURE');
+    req.message = 'GET_POST_LIST';
+    next(err);
   }
 };
 

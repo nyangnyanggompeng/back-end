@@ -1,36 +1,36 @@
-import express from 'express';
-import db from '../../models/index.js';
+// passwordCheck.js와 비교해서 send 내용 하나로 통일하기
+
+import models from '../../models/index.js';
 import bcrypt from 'bcrypt';
-import jwt from 'jsonwebtoken';
 const saltRounds = 10;
 
-async function resetPassword (req, res) {
+const resetPassword = async (req, res, next) => {
+  try {
     const id = req.params.id;
-    const password = req.body.password;
-    const passwordVerify = req.body.passwordVerify;
+    const { password, passwordVerify } = req.body;
 
-    if (password && passwordVerify) {
-        if (password !== passwordVerify) {
-            res.status(400).send("BAD_REQUEST");
-        } else {
-            const encryptedPW = bcrypt.hashSync(password, saltRounds);
-            const users = await db.User.findAll({
-                where: {id: id}
-            });
-
-            const check = await bcrypt.compare(password, users[0].password);
-            if (!check) {
-                users[0].update({ password: encryptedPW });
-                res.status(200).send("SUCCESS");
-            } else {
-                res.status(400).send("CURRENT_PASSWORD");
-            }
-        }
+    if (!password || !passwordVerify) {
+      return res.status(400).send('PASSWORD_OR_PASSWORD_VERIFY_NOT_ENTERED');
+    } else if (password !== passwordVerify) {
+      return res.status(400).send('PASSWORD_NOT_MATCHED');
     } else {
-        res.status(400).send("BAD_REQUEST");
-    }
-}
+      const encryptedPW = bcrypt.hashSync(password, saltRounds);
+      const users = await models.User.findOne({
+        where: { id: id }
+      });
 
-export default {
-    resetPassword
-}
+      const check = await bcrypt.compare(password, users.password);
+      if (!check) {
+        await users.update({ password: encryptedPW });
+        return res.status(200).send('RESET_PASSWORD_SUCCESS');
+      } else {
+        return res.status(400).send('CURRENT_USING_PASSWORD');
+      }
+    }
+  } catch (err) {
+    req.message = 'RESET_PASSWORD';
+    next(err);
+  }
+};
+
+export default resetPassword;

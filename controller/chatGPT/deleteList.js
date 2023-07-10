@@ -14,7 +14,8 @@ const deleteList = async (req, res, next) => {
 
     return res.status(200).send('DELETE_LIST_SUCCESS');
   } catch (err) {
-    return res.status(500).send('DELETE_LIST_FAILURE');
+    req.message = 'DELETE_LIST';
+    next(err);
   }
 };
 

@@ -1,5 +1,5 @@
-'use strict';
 import express from 'express';
+const router = express.Router();
 
 import getList from '../controller/chatGPT/getList.js';
 import postList from '../controller/chatGPT/postList.js';
@@ -13,20 +13,21 @@ import setBookmark from '../controller/chatGPT/setBookmark.js';
 import searchList from '../controller/chatGPT/searchList.js';
 import searchContent from '../controller/chatGPT/searchContent.js';
 
-const router = express.Router();
-
 router.get('/', (req, res) => {
   res.render('chatgpt', {}); // views 폴더 밑에 있는 파일을 참조함
 });
 router.get('/list/:user_id/:page_num', getList);
 router.post('/list/:user_id', postList);
+router.put('/list/:list_id', deleteList);
+
 router.get('/content/:list_id', getContent);
 router.post('/content/:list_id', postContent);
 router.post('/content/:list_id/:question_num', postAnswer);
-router.put('/list/:list_id', deleteList);
+router.put('/list/:list_id/content/:content_id', deleteContent);
+
 router.get('/bookmark/:user_id/:page_num', getBookmark);
 router.get('/set/bookmark/:content_id', setBookmark);
-router.put('/list/:list_id/content/:content_id', deleteContent);
+
 router.post('/search/list/:user_id/:page_num', searchList);
 router.post('/search/content/:user_id/:page_num', searchContent);
 

@@ -22,7 +22,8 @@ const deleteComment = async (req, res, next) => {
 
     return res.status(200).send('DELETE_COMMENT_SUCCESS');
   } catch (err) {
-    return res.status(500).send('DELETE_COMMENT_FAILURE');
+    req.message = 'DELETE_COMMENT';
+    next(err);
   }
 };
 

@@ -12,7 +12,8 @@ const getContent = async (req, res, next) => {
 
     return res.status(200).json(Content);
   } catch (err) {
-    return res.status(500).send('GET_CONTENT_FAILURE');
+    req.message = 'GET_CONTENT';
+    next(err);
   }
 };
 

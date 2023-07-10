@@ -5,10 +5,10 @@ import models from '../../models/index.js';
 const postList = async (req, res, next) => {
   try {
     const userId = Number(req.params.user_id);
-    const listName = req.body.name;
+    const { name } = req.body;
 
-    if (!listName) {
-      return res.status(400).send('LIST_NAME_NO_ENTERED');
+    if (!name) {
+      return res.status(400).send('LIST_NAME_NOT_ENTERED');
     }
 
     // 대화목록 개수 계산하기
@@ -22,12 +22,12 @@ const postList = async (req, res, next) => {
       res.status(400).send('UNABLE_TO_CREATE_LIST_ANYMORE');
     } else {
       const duplication = await models.ChatGPTList.findAll({
-        where: { userId: userId, name: listName }
+        where: { userId: userId, name: name }
       });
       if (duplication.length === 0) {
         await models.ChatGPTList.create({
           userId: `${userId}`, // Foreign Key
-          name: listName
+          name: name
         });
         res.status(200).send('POST_LIST_SUCCESS');
       } else {
@@ -35,7 +35,8 @@ const postList = async (req, res, next) => {
       }
     }
   } catch (err) {
-    return res.status(500).send('POST_LIST_FAILURE');
+    req.message = 'POST_LIST';
+    next(err);
   }
 };
 

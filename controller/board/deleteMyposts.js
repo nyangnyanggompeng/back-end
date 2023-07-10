@@ -16,7 +16,8 @@ const deleteMyposts = async (req, res, next) => {
 
     return res.status(200).send('DELETE_MY_POST_SUCCESS');
   } catch (err) {
-    return res.status(500).send('DELETE_MY_POST_FAILURE');
+    req.message = 'DELETE_MY_POST';
+    next(err);
   }
 };
 

@@ -24,7 +24,8 @@ const deleteContent = async (req, res, next) => {
 
     return res.status(200).send('DELETE_CONTENT_SUCCESS');
   } catch (err) {
-    return res.status(500).send('DELETE_CONTENT_FAILURE');
+    req.message = 'DELETE_CONTENT';
+    next(err);
   }
 };
 

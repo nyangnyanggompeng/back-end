@@ -1,26 +1,27 @@
-import express from 'express';
-import db from "../../models/index.js";
+import models from '../../models/index.js';
 
-async function idCheck (req, res) {
-    const username = req.body.username;
-    const domain = req.body.domain;
-
-    if (username && domain) {
-        const users = await db.User.findAll({
-            where: {username: username, domain: domain}
-        });
-
-        if (users.length === 0) { // 사용가능 이메일
-            res.status(200).send('AVAILABLE_EMAIL');
-        } else { // 사용불가 이메일
-            res.status(400).send('EMAIL_ALREADY_EXISTS');
-        }
+const idCheck = async (req, res, next) => {
+  try {
+    const { username, domain } = req.body;
+    if (!username || !domain) {
+      return res.status(400).send('EMAIL_NOT_ENTERED');
     } else {
-        res.status(400).send("EMAIL_NO_ENTERED");
-    }
-    
-}
+      const users = await models.User.findOne({
+        where: { username: username, domain: domain }
+      });
 
-export default {
-    idCheck
-}
+      if (users) {
+        // 사용불가 이메일
+        return res.status(400).send('EMAIL_ALREADY_EXISTS');
+      } else {
+        // 사용가능 이메일
+        return res.status(200).send('AVAILABLE_EMAIL');
+      }
+    }
+  } catch (err) {
+    req.message = 'EMAIL_CHECK';
+    next(err);
+  }
+};
+
+export default idCheck;

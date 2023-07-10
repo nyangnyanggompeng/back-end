@@ -7,14 +7,14 @@ const searchList = async (req, res, next) => {
   try {
     const userId = Number(req.params.user_id);
     const pageNum = Number(req.params.page_num);
+    const { content } = req.body;
     let ContentList = [];
     let numberOfResult = 0,
       start = 0,
       end = 0;
 
-    const content = req.body.content;
     if (!content) {
-      return res.status(400).send('CONTENT_NO_ENTERED');
+      return res.status(400).send('CONTENT_NOT_ENTERED');
     }
 
     const List = await models.ChatGPTList.findAndCountAll({
@@ -63,8 +63,8 @@ const searchList = async (req, res, next) => {
 
     return res.status(200).json({ Result, numberOfResult, totalPages });
   } catch (err) {
-    console.log(err);
-    return res.status(500).send('SEARCH_CONTENT_FAILURE');
+    req.message = 'SEARCH_CONTENT';
+    next(err);
   }
 };
 

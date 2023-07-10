@@ -35,7 +35,8 @@ const getMypost = async (req, res, next) => {
 
     return res.status(200).json({ Post, numberOfMyPost, totalPages });
   } catch (err) {
-    return res.status(500).send('GET_MY_POST_FAILURE');
+    req.message = 'GET_MY_POST';
+    next(err);
   }
 };
 

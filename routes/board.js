@@ -1,5 +1,6 @@
-'use strict';
 import express from 'express';
+const router = express.Router();
+
 import auth from '../middleware/auth.js';
 
 import getPostlist from '../controller/board/getPostlist.js';
@@ -18,8 +19,6 @@ import getMypost from '../controller/board/getMypost.js';
 import getMycomment from '../controller/board/getMycomment.js';
 import deleteMyposts from '../controller/board/deleteMyposts.js';
 import deleteMycomments from '../controller/board/deleteMycomments.js';
-
-const router = express.Router();
 
 router.get('/:page_num', getPostlist); // localhost:5000/api/board/:page_num
 

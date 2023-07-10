@@ -8,7 +8,7 @@ const updatePost = async (req, res, next) => {
     const { title, content } = req.body;
 
     if (!title || !content) {
-      return res.status(400).send('TITLE_OR_CONTENT_NO_ENTERED');
+      return res.status(400).send('TITLE_OR_CONTENT_NOT_ENTERED');
     }
 
     await models.Post.update(
@@ -21,7 +21,8 @@ const updatePost = async (req, res, next) => {
 
     return res.status(200).send('UPDATE_POST_SUCCESS');
   } catch (err) {
-    return res.status(500).send('UPDATE_POST_FAILURE');
+    req.message = 'UPDATE_POST';
+    next(err);
   }
 };
 

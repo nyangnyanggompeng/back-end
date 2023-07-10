@@ -9,7 +9,7 @@ const postComment = async (req, res, next) => {
     const { content } = req.body;
 
     if (!content) {
-      return res.status(400).send('CONTENT_NO_ENTERED');
+      return res.status(400).send('CONTENT_NOT_ENTERED');
     }
 
     const User = await models.User.findOne({
@@ -38,6 +38,8 @@ const postComment = async (req, res, next) => {
 
     return res.status(200).send('POST_COMMENT_SUCCESS');
   } catch (err) {
+    req.message = 'POST_COMMENT';
+    next(err);
     return res.status(500).send('POST_COMMENT_FAILURE');
   }
 };

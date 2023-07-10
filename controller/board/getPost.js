@@ -14,7 +14,8 @@ const getPost = async (req, res, next) => {
 
     return res.status(200).json(Post);
   } catch (err) {
-    return res.status(500).send('GET_POST_FAILURE');
+    req.message = 'GET_POST';
+    next(err);
   }
 };
 

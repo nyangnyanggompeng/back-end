@@ -16,7 +16,8 @@ const setBookmark = async (req, res, next) => {
 
     return res.status(200).send('SET_BOOKMARK_SUCCESS');
   } catch (err) {
-    return res.status(500).send('sET_BOOKMARK_FAILURE');
+    req.message = 'SET_BOOKMARK';
+    next(err);
   }
 };
 
