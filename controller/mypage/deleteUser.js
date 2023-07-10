@@ -6,12 +6,26 @@ const deleteUser = async (req, res, next) => {
     const id = req.params.id;
     const { password } = req.body;
 
-    if (!password) {
-      return res.status(400).send('PASSWORD_NOT_ENTERED');
+    const users = await db.User.findAll({
+        where: {id: id}
+    });
+
+    if (users.length !== 0) {
+        res.status(401).send("UNAUTHORIZED");
     } else {
-      const users = await models.User.findOne({
-        where: { id: id }
-      });
+        if (password) {
+            const check = await bcrypt.compare(password, users[0].password);
+            if (!check) {
+                res.status(400).send("INVALID_PASSWORD");
+            } else {
+                users[0].update({ useStatus: 0 });
+                res.status(200).send("USER_DELETED");
+            }
+        } else {
+            res.status(400).send("PASSWORD_NOT_ENTERED");
+        }
+    }
+}
 
       const check = await bcrypt.compare(password, users.password);
       if (!check) {
