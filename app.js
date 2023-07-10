@@ -2,10 +2,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
-// import cookieParser from "cookie-parser";
 import indexRouter from './routes/index.js';
 import db from './models/index.js';
 dotenv.config();
+
+const domains = ['http://localhost:5173'];
+// const domains = ['*'];
 
 const app = express();
 app.set('view engine', 'ejs'); // view 엔진을 ejs를 쓰겠다는 설정
@@ -29,23 +31,37 @@ app.use(
 );
 
 // app.use(cookieParser(process.env.SECERET_COOKIE))
+// app.use(cors({ credentials: true, origin: '*' }));
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    const isTrue = domains.indexOf(origin) !== -1;
+    callback(null, isTrue);
+  },
+  credentials: true
+};
+app.use(cors(corsOptions));
+
 app.use(
-  cors({
-    orogin: '*'
-  })
+  '/api',
+  (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    next();
+  },
+  indexRouter
 );
 
-app.use('/api', indexRouter);
-
 app.use((req, res, next) => {
-  const error = new Error(`${req.method} ${req.url} 찾을 수 없음`);
-  error.status = 404;
-  next(error);
+  const err = new Error(`${req.method} ${req.url} 찾을 수 없음`);
+  err.status = 404;
+  next(err);
 });
 
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
-  res.send(err.message);
+  console.log(`[Error] ${err}`);
+  res.send(`${req.message}_FAILURE`);
+  // res.send(`${err.status} Error`);
 });
 
 app.listen(process.env.PORT || 3000, () => {

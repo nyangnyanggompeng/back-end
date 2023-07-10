@@ -1,12 +1,23 @@
-'use strict';
 import express from 'express';
 const router = express.Router();
 
-// import { User } from '../models/index.js';
-// import loginUser from '../controller/users/loginUser.js';
+import cookieParser from 'cookie-parser';
 
-router.get('/login', (req, res) => {
-  res.render('login', {}); // views 폴더 밑에 있는 파일을 참조함
+import loginUser from '../controller/login/loginUser.js';
+import refreshToken from '../controller/login/refreshToken.js';
+import logoutUser from '../controller/login/logoutUser.js';
+
+import auth from '../middleware/auth.js';
+
+router.use(cookieParser());
+
+router.get('/auth', auth, (req, res) => {
+  console.log(req.decoded);
+  return res.status(200).send(req.decoded);
 });
+
+router.post('/login', loginUser);
+router.get('/logout', logoutUser);
+router.post('/refresh', refreshToken);
 
 export default router;
