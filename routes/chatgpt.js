@@ -8,8 +8,6 @@ import postContent from '../controller/chatGPT/postContent.js';
 import postAnswer from '../controller/chatGPT/postAnswer.js';
 import deleteList from '../controller/chatGPT/deleteList.js';
 import deleteContent from '../controller/chatGPT/deleteContent.js';
-import getBookmark from '../controller/chatGPT/getBookmark.js';
-import setBookmark from '../controller/chatGPT/setBookmark.js';
 import searchList from '../controller/chatGPT/searchList.js';
 import searchContent from '../controller/chatGPT/searchContent.js';
 
@@ -24,9 +22,6 @@ router.get('/content/:list_id', getContent);
 router.post('/content/:list_id', postContent);
 router.post('/content/:list_id/:question_num', postAnswer);
 router.put('/list/:list_id/content/:content_id', deleteContent);
-
-router.get('/bookmark/:user_id/:page_num', getBookmark);
-router.get('/set/bookmark/:content_id', setBookmark);
 
 router.post('/search/list/:user_id/:page_num', searchList);
 router.post('/search/content/:user_id/:page_num', searchContent);
