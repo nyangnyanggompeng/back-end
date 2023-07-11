@@ -30,7 +30,8 @@ const getMycomment = async (req, res, next) => {
       },
       order: [['createdAt', 'desc']],
       offset: offset,
-      limit: 10
+      limit: 10,
+      include: [{ model: models.Post, attributes: ['title'] }]
     });
 
     return res.status(200).json({ Comment, numberOfMyComment, totalPages });

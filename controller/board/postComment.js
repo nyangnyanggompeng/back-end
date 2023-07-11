@@ -28,10 +28,10 @@ const postComment = async (req, res, next) => {
       content: content
     });
 
-    const num = Post.numOfComment + 1;
+    const num = Post.numberOfComment + 1;
     await models.Post.update(
       {
-        numOfComment: num
+        numberOfComment: num
       },
       { where: { id: postId } }
     );

@@ -24,7 +24,7 @@ router.patch('/users/:id', auth, updateInfo);
 router.patch('/users/:id/reset_password', resetPassword);
 router.put('/users/:id', auth, deleteUser);
 
-router.get('/bookmark/:user_id/:page_num', getBookmark);
+router.get('/set/bookmark/:user_id/:page_num', getBookmark);
 router.get('/bookmark/:content_id', setBookmark);
 
 router.get('/:user_id/posts/:page_num', getMypost);

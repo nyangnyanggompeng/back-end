@@ -22,7 +22,7 @@ const getPostlist = async (req, res, next) => {
         'id',
         'writer',
         'title',
-        'numOfComment',
+        'numberOfComment',
         'createdAt',
         'userId'
       ],
