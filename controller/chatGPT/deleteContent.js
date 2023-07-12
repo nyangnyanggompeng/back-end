@@ -22,12 +22,7 @@ const deleteContent = async (req, res, next) => {
 
       const questionNum = Content.questionNum;
       if (questionNum === 0) {
-        await models.ChatGPTContent.destroy({
-          where: {
-            listId: listId
-          }
-        });
-        break;
+        return res.status(400).send('UNABLE_TO_DELETE_CONTENT');
       } else {
         await models.ChatGPTContent.destroy({
           where: {
