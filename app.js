@@ -6,9 +6,6 @@ import indexRouter from './routes/index.js';
 import db from './models/index.js';
 dotenv.config();
 
-const domains = ['http://localhost:5173'];
-// const domains = ['*'];
-
 const app = express();
 app.set('view engine', 'ejs'); // view 엔진을 ejs를 쓰겠다는 설정
 
@@ -33,19 +30,27 @@ app.use(
 // app.use(cookieParser(process.env.SECERET_COOKIE))
 // app.use(cors({ credentials: true, origin: '*' }));
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    const isTrue = domains.indexOf(origin) !== -1;
-    callback(null, isTrue);
-  },
-  credentials: true
-};
-app.use(cors(corsOptions));
+// const domains = ['http://localhost:5173'];
+
+// const corsOptions = {
+//   origin: function (origin, callback) {
+//     const isTrue = domains.indexOf(origin) !== -1;
+//     callback(null, isTrue);
+//   },
+//   credentials: true
+// };
+// app.use(cors(corsOptions));
 
 app.use(
   '/api',
   (req, res, next) => {
     res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header(
+      'Access-Control-Allow-Headers',
+      'X-Requested-With, Content-Type'
+    );
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH');
     next();
   },
   indexRouter
@@ -54,6 +59,7 @@ app.use(
 app.use((req, res, next) => {
   const err = new Error(`${req.method} ${req.url} 찾을 수 없음`);
   err.status = 404;
+  req.message = 'PAGE_FIND';
   next(err);
 });
 

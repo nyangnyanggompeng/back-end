@@ -17,7 +17,7 @@ const loginUser = async (req, res, next) => {
 
       if (!users) {
         // EMAIL DOESN'T EXISTS
-        return res.status(400).send('EMAIL_DOESNT_EXISTS');
+        return res.status(400).send('EMAIL_DOESNT_EXIST');
       } else {
         // EMAIL EXIST
         if (users.useStatus === 0) {

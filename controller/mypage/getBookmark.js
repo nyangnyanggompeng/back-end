@@ -10,15 +10,17 @@ const getBookmark = async (req, res, next) => {
     let start = 0,
       end = 0;
 
-    const List = await models.ChatGPTList.findAll({
+    const List = await models.ChatGPTList.findAndCountAll({
       attributes: ['id'],
       where: { userId: userId }
     });
 
     let numberOfContent = 0;
-    for (let i = 0; i < List.length; i++) {
+    for (let i = 0; i < List.count; i++) {
       const Value = await models.ChatGPTContent.findAndCountAll({
-        where: { bookmark: true, listId: List[i].dataValues.id }
+        attributes: ['id', 'content', 'listId'],
+        where: { bookmark: true, listId: List.rows[i].dataValues.id },
+        include: [{ model: models.ChatGPTList, attributes: ['name'] }]
       });
       for (let j = 0; j < Value.count; j++) {
         ContentList.push(Value.rows[j].dataValues);

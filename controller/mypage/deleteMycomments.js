@@ -4,7 +4,7 @@ import models from '../../models/index.js';
 
 const deleteMycomments = async (req, res, next) => {
   try {
-    const commentIdList = req.body.comment_id_list;
+    const { commentIdList } = req.body;
 
     if (!commentIdList) {
       return res.status(400).send('EMPTY_COMMENT_ID_LIST');
@@ -20,17 +20,20 @@ const deleteMycomments = async (req, res, next) => {
         where: { id: Comment.postId }
       });
 
-      await models.Comment.destroy({
-        where: { id: commentIdList[i] }
-      });
-
-      const num = Post.numOfComment - 1;
-      await models.Post.update(
-        {
-          numOfComment: num
-        },
-        { where: { id: Comment.postId } }
-      );
+      if (!Post) {
+        return res.stauts(400).send('POST_DOSENT_EXIST');
+      } else {
+        await models.Comment.destroy({
+          where: { id: commentIdList[i] }
+        });
+        const num = Post.numberOfComment - 1;
+        await models.Post.update(
+          {
+            numberOfComment: num
+          },
+          { where: { id: Comment.postId } }
+        );
+      }
     }
 
     return res.status(200).send('DELETE_MY_COMMENT_SUCCESS');

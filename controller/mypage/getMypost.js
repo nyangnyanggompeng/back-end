@@ -24,7 +24,14 @@ const getMypost = async (req, res, next) => {
     }
 
     const Post = await models.Post.findAll({
-      attributes: ['id', 'writer', 'title', 'content', 'createdAt'],
+      attributes: [
+        'id',
+        'writer',
+        'title',
+        'content',
+        'numberOfComment',
+        'createdAt'
+      ],
       where: {
         userId: userId
       },

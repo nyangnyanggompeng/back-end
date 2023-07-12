@@ -40,7 +40,8 @@ const searchList = async (req, res, next) => {
             { content: { [Op.like]: `%${content}%` } },
             { listId: List.rows[i].dataValues.id }
           ]
-        }
+        },
+        include: [{ model: models.ChatGPTList, attributes: ['name'] }]
       });
       for (let j = 0; j < Content.count; j++) {
         ContentList.push(Content.rows[j].dataValues);

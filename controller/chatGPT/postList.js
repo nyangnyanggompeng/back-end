@@ -6,6 +6,7 @@ const postList = async (req, res, next) => {
   try {
     const userId = Number(req.params.user_id);
     const { name } = req.body;
+    let List;
 
     if (!name) {
       return res.status(400).send('LIST_NAME_NOT_ENTERED');
@@ -25,11 +26,17 @@ const postList = async (req, res, next) => {
         where: { userId: userId, name: name }
       });
       if (duplication.length === 0) {
-        await models.ChatGPTList.create({
+        List = await models.ChatGPTList.create({
           userId: `${userId}`, // Foreign Key
           name: name
         });
-        res.status(200).send('POST_LIST_SUCCESS');
+
+        res.status(200).json({
+          id: List.id,
+          type: List.type,
+          name: List.name,
+          createdAt: List.createdAt
+        });
       } else {
         res.status(400).send('LIST_NAME_ALREADY_EXISTS');
       }

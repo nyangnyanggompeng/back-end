@@ -13,7 +13,7 @@ const Post = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false
       },
-      numOfComment: {
+      numberOfComment: {
         type: DataTypes.INTEGER,
         defaultValue: 0
       }
