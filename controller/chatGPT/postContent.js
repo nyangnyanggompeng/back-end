@@ -29,17 +29,17 @@ const postContent = async (req, res, next) => {
       } else {
         content = `${type}` + '면접 질문 ' + `${count}` + '개 해 줘';
       }
-      console.log('[32] content = ', content);
+
       // 기존 메시지가 존재하지 않는다고 가정
       await models.ChatGPTContent.create({
         listId: `${listId}`,
         sender: 'user',
         content: content
       });
-      console.log('[39] console.log');
+
       // 이후 middleware/chatgpt 실행
       const response = await callChatGPT(content);
-      console.log('[42] content = ', response);
+
       // if ( response에 /n이 포함되어 있으면 ) -> 분리해서 넣기
       if (response.content.includes('\n')) {
         const list = response.content.split('\n');
