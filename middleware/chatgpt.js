@@ -2,11 +2,14 @@ import dotenv from 'dotenv';
 import { Configuration, OpenAIApi } from 'openai';
 dotenv.config();
 
+const OPENAI_ORGANIZATION = 'org-wPcXFlLfnk0Aatp6prxZQO15';
+const OPENAI_API_KEY = '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';
+
 const callChatGPT = async prompt => {
   try {
     const configiration = new Configuration({
-      apiKey: process.env.OPENAI_API_KEY,
-      organization: process.env.OPENAI_ORGANIZATION
+      apiKey: OPENAI_API_KEY,
+      organization: OPENAI_ORGANIZATION
     });
 
     // openai에서 발급 받은 비밀키, 조직ID로 객체를 생성
