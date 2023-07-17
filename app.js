@@ -75,7 +75,7 @@ app.use((err, req, res, next) => {
   // res.send(`${err.status} Error`);
 });
 
-app.listen(process.env.PORT || 80, () => {
+app.listen(process.env.PORT || 8080, () => {
   console.log(`${process.env.PORT}번 포트로 연결되었습니다.`);
 });
 
