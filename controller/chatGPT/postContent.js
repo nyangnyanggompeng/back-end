@@ -10,11 +10,15 @@ const postContent = async (req, res, next) => {
     const { prompt, type, count } = req.body;
     let content, ChatGPTContent;
 
-    if (!prompt || !type || !count) {
-      return res.status(400).send('PROMPT_OR_TYPE_OR_COUNT_NOT_ENTERED');
-    }
+    const List = await models.ChatGPTList.findAll({
+      where: { id: listId }
+    });
 
-    if (count > 10) {
+    if (List.length === 0) {
+      return res.status(400).send('WRONG_CHATGPT_LIST');
+    } else if (!prompt || !type || !count) {
+      return res.status(400).send('PROMPT_OR_TYPE_OR_COUNT_NOT_ENTERED');
+    } else if (count > 10) {
       return res.status(400).send('TOO_MANY_QUESTIONS');
     } else {
       if (prompt) {
@@ -43,7 +47,6 @@ const postContent = async (req, res, next) => {
       // if ( response에 /n이 포함되어 있으면 ) -> 분리해서 넣기
       if (response.content.includes('\n')) {
         const list = response.content.split('\n');
-        console.log('list : ', list);
         for (let i = 0; i < list.length; i++) {
           if (!isNaN(list[i][0])) {
             const quesiton = list[i].slice(3);
@@ -56,6 +59,13 @@ const postContent = async (req, res, next) => {
             });
           }
         }
+      } else if (count === '1') {
+        ChatGPTContent = await models.ChatGPTContent.create({
+          listId: `${listId}`,
+          sender: 'assistant',
+          content: response.content,
+          questionNum: 1
+        });
       } else {
         ChatGPTContent = await models.ChatGPTContent.create({
           listId: `${listId}`,
@@ -74,7 +84,7 @@ const postContent = async (req, res, next) => {
         where: { listId: listId, sender: 'assistant' }
       });
 
-      return res.status(200).json(ChatGPTContent);
+      return res.status(200).json([{ prompt, type, count }, ChatGPTContent]);
     }
   } catch (err) {
     req.message = 'POST_CONTENT';
