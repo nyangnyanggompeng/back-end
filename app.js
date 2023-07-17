@@ -63,6 +63,10 @@ app.use((req, res, next) => {
   next(err);
 });
 
+app.get('/', (req, res) => {
+  return res.render('index', {}); // views 폴더 밑에 있는 파일을 참조함
+});
+
 app.use((err, req, res, next) => {
   res.status(err.status || 500);
   console.log(`[Error] ${err}`);
