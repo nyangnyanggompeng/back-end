@@ -3,7 +3,7 @@ FROM node:latest
 LABEL author="nyangnyanggompeng"
 
 ENV NODE_ENV production
-ENV PORT 3000
+ENV PORT 80
 ENV ACCESS_TOKEN_SECRET_KEY 'secret key'
 ENV REFRESH_TOKEN_SECRET_KEY 'secret key'
 ENV GMAIL_ID nyangnyanggompeng@gmail.com

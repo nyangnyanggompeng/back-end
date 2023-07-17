@@ -41,6 +41,11 @@ app.use(
 // };
 // app.use(cors(corsOptions));
 
+// 페이지 로딩 함수
+app.use('/', (req, res) => {
+  res.render('mypage', {}); // views 폴더 밑에 있는 파일을 참조함
+});
+
 app.use(
   '/api',
   (req, res, next) => {
