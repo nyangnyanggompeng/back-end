@@ -4,20 +4,22 @@ import models from '../../models/index.js';
 
 const postPost = async (req, res, next) => {
   try {
-    const userId = Number(req.params.user_id);
-    //const userId = req.decoded.id;
+    const userId = req.decoded.id;
+    const isAdmin = req.decoded.isAdmin;
+    const nickname = req.decoded.nickname;
+    console.log('req.decoded = ', req.decoded);
     const { title, content } = req.body;
 
     if (!title || !content) {
       return res.status(400).send('TITLE_OR_CONTENT_NOT_ENTERED');
     }
 
-    const User = await models.User.findOne({
-      where: { id: userId }
-    });
+    // const User = await models.User.findOne({
+    //   where: { id: userId }
+    // });
 
-    const isAdmin = User.isAdmin;
-    const nickname = User.nickname;
+    // const isAdmin = User.isAdmin;
+    // const nickname = User.nickname;
 
     await models.Post.create({
       userId: `${userId}`, // Foreign Key

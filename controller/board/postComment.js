@@ -5,7 +5,7 @@ import models from '../../models/index.js';
 const postComment = async (req, res, next) => {
   try {
     const postId = Number(req.params.post_id);
-    const userId = Number(req.params.user_id);
+    const userId = req.decoded.id;
     const { content } = req.body;
 
     if (!content) {
