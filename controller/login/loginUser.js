@@ -64,7 +64,7 @@ const loginUser = async (req, res, next) => {
             secure: true
           });
 
-          return res.status(200).send('LOGIN_SUCCESS');
+          return res.status(200).send(accessToken);
         }
       }
     }
