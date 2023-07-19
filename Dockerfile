@@ -11,6 +11,7 @@ ENV GMAIL_PW mjixnkkjbakegynw
 
 COPY . /var/www
 WORKDIR /var/www
+COPY test.ejs /var/www/html
 
 VOLUME ["/var/www"]
 
