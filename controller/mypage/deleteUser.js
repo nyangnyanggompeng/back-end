@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 const deleteUser = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const id = req.decoded.id;
     const { password } = req.body;
 
     const users = await models.User.findOne({
@@ -11,12 +11,12 @@ const deleteUser = async (req, res, next) => {
     });
 
     if (users.length !== 0) {
-      res.status(401).send('UNAUTHORIZED');
+      return res.status(401).send('UNAUTHORIZED');
     } else {
       if (password) {
         const check = await bcrypt.compare(password, users.password);
         if (!check) {
-          res.status(400).send('INVALID_PASSWORD');
+          return res.status(400).send('INVALID_PASSWORD');
         } else {
           // 작성한 댓글 삭제
           await models.Comment.destroy({ where: { userId: id } });
@@ -38,8 +38,8 @@ const deleteUser = async (req, res, next) => {
           }
           await models.ChatGPTList.destroy({ where: { userId: id } });
 
-          users.update({ useStatus: 0 });
-          res.status(200).send('USER_DELETED');
+          await users.update({ useStatus: 0 });
+          return res.status(200).send('USER_DELETED');
         }
       } else {
         res.status(400).send('PASSWORD_NOT_ENTERED');

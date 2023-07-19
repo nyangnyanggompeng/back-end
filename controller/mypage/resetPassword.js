@@ -6,7 +6,7 @@ const saltRounds = 10;
 
 const resetPassword = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const id = req.decoded.id;
     const { password, passwordVerify } = req.body;
 
     if (!password || !passwordVerify) {
