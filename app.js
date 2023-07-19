@@ -32,28 +32,28 @@ app.use(
 
 // const domains = ['http://localhost:5173'];
 
-const corsOptions = {
-  origin: 'http://localhost:5173',
-  credentials: true
-};
-app.use(cors(corsOptions));
+// const corsOptions = {
+//   origin: 'http://localhost:5173',
+//   credentials: true
+// };
+// app.use(cors(corsOptions));
 
-app.use('/', indexRouter);
+// app.use('/', indexRouter);
 
-// app.use(
-//   '/api',
-//   (req, res, next) => {
-//     res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
-//     res.header('Access-Control-Allow-Credentials', 'true');
-//     res.header(
-//       'Access-Control-Allow-Headers',
-//       'X-Requested-With, Content-Type'
-//     );
-//     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH');
-//     next();
-//   },
-//   indexRouter
-// );
+app.use(
+  '/api',
+  (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header(
+      'Access-Control-Allow-Headers',
+      'X-Requested-With, Content-Type'
+    );
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH');
+    next();
+  },
+  indexRouter
+);
 
 app.use((req, res, next) => {
   const err = new Error(`${req.method} ${req.url} 찾을 수 없음`);
@@ -63,7 +63,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, res) => {
-  return res.render('index', {}); // views 폴더 밑에 있는 파일을 참조함
+  return res.render('test', {}); // views 폴더 밑에 있는 파일을 참조함
 });
 
 app.use((err, req, res, next) => {
