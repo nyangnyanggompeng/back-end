@@ -4,7 +4,7 @@ import models from '../../models/index.js';
 
 const postList = async (req, res, next) => {
   try {
-    const userId = Number(req.params.user_id);
+    const userId = req.decoded.id;
     const { name } = req.body;
     let List;
 

@@ -11,10 +11,18 @@ const deleteList = async (req, res, next) => {
     }
 
     for (let i = 0; i < listIdList.length; i++) {
-      await models.ChatGPTList.destroy({ where: { id: listIdList[i] } });
+      const List = await models.ChatGPTList.findOne({
+        where: { id: listIdList[i] }
+      });
+      if (!List) {
+        return res.status(400).send('LIST_DOSENT_EXIST');
+      } else if (req.decoded.id != List.userId) {
+        return res.status(401).send('NO_PERMISSIONS');
+      } else {
+        await models.ChatGPTList.destroy({ where: { id: listIdList[i] } });
+        return res.status(200).send('DELETE_LIST_SUCCESS');
+      }
     }
-
-    return res.status(200).send('DELETE_LIST_SUCCESS');
   } catch (err) {
     req.message = 'DELETE_LIST';
     next(err);
