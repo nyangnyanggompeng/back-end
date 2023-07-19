@@ -5,7 +5,7 @@ import { Op } from 'sequelize';
 
 const searchList = async (req, res, next) => {
   try {
-    const userId = Number(req.params.user_id);
+    const userId = req.decoded.id;
     const pageNum = Number(req.params.page_num);
     const { content } = req.body;
     let ContentList = [];

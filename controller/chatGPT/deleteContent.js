@@ -7,7 +7,6 @@ const deleteContent = async (req, res, next) => {
   try {
     const listId = Number(req.params.list_id);
     const { contentIdList } = req.body;
-    // const contentId = Number(req.params.content_id);
 
     if (!contentIdList) {
       return res.status(400).send('EMPTY_CONTENT_ID_LIST');
@@ -20,8 +19,18 @@ const deleteContent = async (req, res, next) => {
         }
       });
 
+      const List = await models.ChatGPTList.findOne({
+        where: {
+          id: Content.listId
+        }
+      });
+
       const questionNum = Content.questionNum;
-      if (questionNum === 0) {
+      if (!List) {
+        return res.status(400).send('LIST_DOESNT_EXIST');
+      } else if (req.decoded.id != List.userId) {
+        return res.status(401).send('NO_PERMISSIONS');
+      } else if (questionNum === 0) {
         return res.status(400).send('UNABLE_TO_DELETE_CONTENT');
       } else {
         await models.ChatGPTContent.destroy({
