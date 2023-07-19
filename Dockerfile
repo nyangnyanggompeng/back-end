@@ -15,6 +15,8 @@ WORKDIR /var/www
 VOLUME ["/var/www"]
 
 RUN npm install
+RUN npm audit fix
+RUN npm install
 
 EXPOSE $PORT
 
