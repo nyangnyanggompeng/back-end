@@ -4,7 +4,7 @@ import models from '../../models/index.js';
 
 const getMycomment = async (req, res, next) => {
   try {
-    const userId = Number(req.params.user_id);
+    const userId = req.decoded.id;
     const pageNum = Number(req.params.page_num);
     let offset;
 

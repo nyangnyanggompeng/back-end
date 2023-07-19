@@ -2,7 +2,7 @@ import models from '../../models/index.js';
 
 const updateInfo = async (req, res, next) => {
   try {
-    const id = req.params.id;
+    const id = req.decoded.id;
     const { nickname } = req.body;
 
     if (!nickname) {

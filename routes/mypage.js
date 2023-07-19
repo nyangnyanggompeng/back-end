@@ -20,16 +20,16 @@ import deleteMycomments from '../controller/mypage/deleteMycomments.js';
 
 router.get('/users', auth, adminAuth, userList);
 router.post('/users/email_check', emailCheck);
-router.patch('/users/:id', auth, updateInfo);
-router.patch('/users/:id/reset_password', resetPassword);
-router.put('/users/:id', auth, deleteUser);
+router.patch('/users', auth, updateInfo);
+router.patch('/users/reset_password', resetPassword);
+router.put('/users', auth, deleteUser);
 
-router.get('/set/bookmark/:user_id/:page_num', getBookmark);
-router.patch('/bookmark/:content_id', setBookmark);
+router.get('/set/bookmark/:page_num', auth, getBookmark);
+router.patch('/bookmark/:content_id', auth, setBookmark);
 
-router.get('/:user_id/posts/:page_num', getMypost);
-router.get('/:user_id/comments/:page_num', getMycomment);
-router.put('/posts', deleteMyposts);
-router.put('/comments', deleteMycomments);
+router.get('/posts/:page_num', auth, getMypost);
+router.get('/comments/:page_num', auth, getMycomment);
+router.put('/posts', auth, deleteMyposts);
+router.put('/comments', auth, deleteMycomments);
 
 export default router;
