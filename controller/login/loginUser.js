@@ -53,11 +53,11 @@ const loginUser = async (req, res, next) => {
             { expiresIn: '1d' }
           );
 
-          res.cookie('accessToken', accessToken, {
-            httpOnly: true,
-            sameSite: 'none',
-            secure: true
-          });
+          // res.cookie('accessToken', accessToken, {
+          //   httpOnly: true,
+          //   sameSite: 'none',
+          //   secure: true
+          // });
           res.cookie('refreshToken', refreshToken, {
             httpOnly: true,
             sameSite: 'none',

@@ -50,6 +50,7 @@ app.use(
       'X-Requested-With, Content-Type'
     );
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH');
+    res.header('Access-Control-Expose-Headers', 'Authorization');
     next();
   },
   indexRouter
