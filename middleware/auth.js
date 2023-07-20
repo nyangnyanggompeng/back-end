@@ -6,12 +6,12 @@ dotenv.config();
 const auth = async (req, res, next) => {
   try {
     // 인증 성공
-    if (!req.cookies || !req.accessToken) {
+    if (!req.cookies || !req.cookies.accessToken) {
       return res.status(401).send('NO_TOKEN');
     }
 
     req.decoded = jwt.verify(
-      req.accessToken,
+      req.cookies.accessToken,
       process.env.ACCESS_TOKEN_SECRET_KEY
     );
 
