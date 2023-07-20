@@ -5,15 +5,13 @@ dotenv.config();
 
 const auth = async (req, res, next) => {
   try {
-    console.log(req.cookies);
-    // console.log(req.cookies.accessToken);
     // 인증 성공
-    if (!req.cookies || !req.cookies.accessToken) {
+    if (!req.cookies || !req.accessToken) {
       return res.status(401).send('NO_TOKEN');
     }
 
     req.decoded = jwt.verify(
-      req.cookies.accessToken,
+      req.accessToken,
       process.env.ACCESS_TOKEN_SECRET_KEY
     );
 
