@@ -4,6 +4,7 @@ import cors from 'cors';
 import morgan from 'morgan';
 import indexRouter from './routes/index.js';
 import db from './models/index.js';
+import cookieParser from 'cookie-parser';
 dotenv.config();
 
 const app = express();
@@ -27,7 +28,7 @@ app.use(
   })
 );
 
-// app.use(cookieParser(process.env.SECERET_COOKIE))
+app.use(cookieParser());
 // app.use(cors({ credentials: true, origin: '*' }));
 
 // const domains = ['http://localhost:5173'];
