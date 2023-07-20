@@ -47,7 +47,7 @@ app.use(
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header(
       'Access-Control-Allow-Headers',
-      'X-Requested-With, Content-Type'
+      'Origin, X-Api-Key, X-Requested-With, Content-Type, Accept, Authorization'
     );
     res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH');
     res.header('Access-Control-Expose-Headers', 'Authorization');
