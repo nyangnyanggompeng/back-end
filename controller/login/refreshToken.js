@@ -29,7 +29,7 @@ const refreshToken = async (req, res, next) => {
               secure: true,
               sameSite: 'none'
             });
-            return res.status(200).send('ACCESS_TOKEN_CREATED_SUCCESS');
+            return res.status(200).send(accessToken);
           }
         }
       );
