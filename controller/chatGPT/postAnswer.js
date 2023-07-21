@@ -22,8 +22,6 @@ const postAnswer = async (req, res, next) => {
       }
     });
 
-    console.log('question = ', question[0].dataValues.content);
-
     const content =
       '질문은 다음과 같다: ' +
       `${question[0].dataValues.content}` +
@@ -31,12 +29,10 @@ const postAnswer = async (req, res, next) => {
       `${answer}` +
       ' 답변에 피드백 해 줘';
 
-    console.log('content = ', content);
-
     await models.ChatGPTContent.create({
       listId: `${listId}`,
       sender: 'user',
-      content: content,
+      content: answer,
       questionNum: questionNum
     });
 

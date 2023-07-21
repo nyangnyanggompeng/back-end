@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 
 const refreshToken = async (req, res, next) => {
   try {
-    if (req.cookies === null) {
+    if (req.cookies !== null) {
       // ?. 뒤에 오는 키 값이 있으면 먼저 확인하고 값 반환
       const refreshToken = req.cookies.refreshToken;
       jwt.verify(
