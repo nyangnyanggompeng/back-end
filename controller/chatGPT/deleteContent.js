@@ -28,7 +28,10 @@ const deleteContent = async (req, res, next) => {
       const questionNum = Content.questionNum;
       if (!List) {
         return res.status(400).send('LIST_DOESNT_EXIST');
-      } else if (req.decoded.id != List.userId) {
+      } else if (
+        req.decoded.id !== List.userId &&
+        req.decoded.isAdmin !== true
+      ) {
         return res.status(401).send('NO_PERMISSIONS');
       } else if (questionNum === 0) {
         return res.status(400).send('UNABLE_TO_DELETE_CONTENT');

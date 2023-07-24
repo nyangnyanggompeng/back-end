@@ -17,7 +17,7 @@ const updatePost = async (req, res, next) => {
 
     if (!Post) {
       return res.status(400).send('POST_DOESNT_EXIST');
-    } else if (req.decoded.id != Post.userId || req.decoded.isAdmin != true) {
+    } else if (req.decoded.id !== Post.userId && req.decoded.isAdmin !== true) {
       return res.status(401).send('NO_PERMISSIONS');
     } else {
       await models.Post.update(

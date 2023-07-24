@@ -24,8 +24,8 @@ const updateComment = async (req, res, next) => {
         if (!Comment) {
           return res.status(400).send('COMMENT_DOESNT_EXIST');
         } else if (
-          req.decoded.id != Comment.userId ||
-          req.decoded.isAdmin != true
+          req.decoded.id !== Comment.userId &&
+          req.decoded.isAdmin !== true
         ) {
           return res.status(401).send('NO_PERMISSIONS');
         } else {
