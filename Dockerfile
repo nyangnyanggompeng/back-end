@@ -17,7 +17,8 @@ VOLUME ["/var/www"]
 
 RUN npm install
 RUN npm audit fix
-RUN npm install --no-fund
+RUN npm fund
+RUN npm install
 
 EXPOSE $PORT
 
