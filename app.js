@@ -2,9 +2,12 @@ import express from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import morgan from 'morgan';
+import swaggerUi from 'swagger-ui-express';
+
 import indexRouter from './routes/index.js';
 import db from './models/index.js';
 import cookieParser from 'cookie-parser';
+import specs from './swagger/swagger.js';
 dotenv.config();
 
 const app = express();
@@ -56,7 +59,7 @@ app.use(
   },
   indexRouter
 );
-
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
 app.use((req, res, next) => {
   const err = new Error(`${req.method} ${req.url} 찾을 수 없음`);
   err.status = 404;

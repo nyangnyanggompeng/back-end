@@ -12,7 +12,14 @@ router.get('/', (req, res) => {
   res.render('test', {}); // views 폴더 밑에 있는 파일을 참조함
 });
 
+/**
+ * @swagger
+ * tags:
+ *   name: Users
+ *   description: 유저 추가 수정 삭제 조회
+ */
 router.use('/users', usersRouter);
+
 router.use('/chatgpt', chatgptrouter);
 router.use('/register', registerRouter);
 router.use('/board', boardRouter);
