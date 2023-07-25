@@ -17,9 +17,7 @@ VOLUME ["/var/www"]
 
 RUN rm -rf node_modules
 RUN npm install -g npm@9.8.1
-RUN npm install
-RUN npm fund
-RUN npm install
+RUN npm install --no-fund
 
 EXPOSE $PORT
 
