@@ -15,9 +15,7 @@ COPY test.ejs /var/www/html
 
 VOLUME ["/var/www"]
 
-RUN npm install
-RUN npm audit fix
-RUN npm fund
+RUN npm upgrade
 RUN npm install
 
 EXPOSE $PORT
