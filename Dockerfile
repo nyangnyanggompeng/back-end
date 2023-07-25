@@ -15,8 +15,9 @@ COPY test.ejs /var/www/html
 
 VOLUME ["/var/www"]
 
-RUN npm upgrade
+RUN npm install -g npm@9.8.1
 RUN npm install
+RUN npm fund
 
 EXPOSE $PORT
 
