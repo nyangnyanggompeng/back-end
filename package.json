@@ -29,6 +29,8 @@
     "openai": "^3.3.0",
     "sequelize": "^6.32.0",
     "sequelize-cli": "^6.6.1",
+    "swagger-jsdoc": "^6.2.8",
+    "swagger-ui-express": "^5.0.0",
     "webpack": "^5.59.1",
     "webpack-node-externals": "^3.0.0"
   },
@@ -45,8 +47,6 @@
     "eslint-plugin-prettier": "^4.2.1",
     "nodemon": "^3.0.1",
     "prettier": "^2.8.8",
-    "swagger-jsdoc": "^6.2.8",
-    "swagger-ui-express": "^5.0.0",
     "webpack-cli": "^4.9.1"
   },
   "babel": {
