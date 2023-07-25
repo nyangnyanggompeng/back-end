@@ -20,9 +20,9 @@ const deleteList = async (req, res, next) => {
         return res.status(401).send('NO_PERMISSIONS');
       } else {
         await models.ChatGPTList.destroy({ where: { id: listIdList[i] } });
-        return res.status(200).send('DELETE_LIST_SUCCESS');
       }
     }
+    return res.status(200).send('DELETE_LIST_SUCCESS');
   } catch (err) {
     req.message = 'DELETE_LIST';
     next(err);
