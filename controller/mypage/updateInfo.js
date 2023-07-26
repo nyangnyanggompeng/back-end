@@ -25,11 +25,16 @@ const updateInfo = async (req, res, next) => {
         return res.status(400).send('NO_EXISTING_USER');
       } else {
         // user 찾음
-        if (deleteImage(users.profile) === 'success') {
+        if (users.profile === '') {
           users.update({ nickname: nickname, profile: profile });
           return res.status(200).send('UPDATE_INFO_SUCCESS');
         } else {
-          return res.status(500).send('UPDATE_INFO_FAILURE');
+          if (deleteImage(users.profile) === 'success') {
+            users.update({ nickname: nickname, profile: profile });
+            return res.status(200).send('UPDATE_INFO_SUCCESS');
+          } else {
+            return res.status(500).send('UPDATE_INFO_FAILURE');
+          }
         }
       }
     }

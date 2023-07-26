@@ -1,5 +1,6 @@
 import models from '../../models/index.js';
 import bcrypt from 'bcrypt';
+import deleteImage from '../../middleware/deleteImage.js';
 
 const deleteUser = async (req, res, next) => {
   try {
@@ -10,7 +11,7 @@ const deleteUser = async (req, res, next) => {
       where: { id: id }
     });
 
-    if (users.length !== 0) {
+    if (users.length === 0) {
       return res.status(401).send('UNAUTHORIZED');
     } else {
       if (password) {
@@ -37,6 +38,15 @@ const deleteUser = async (req, res, next) => {
             });
           }
           await models.ChatGPTList.destroy({ where: { userId: id } });
+
+          // S3 프로필 이미지 삭제
+          if (users.profile !== '') {
+            if (deleteImage(users.profile) === 'success') {
+              await users.update({ profile: '' });
+            } else {
+              return res.status(500).send('USER_DELETED_FAILURE');
+            }
+          }
 
           await users.update({ useStatus: 0 });
           return res.status(200).send('USER_DELETED');
