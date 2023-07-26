@@ -8,6 +8,7 @@ ENV ACCESS_TOKEN_SECRET_KEY 'secret key'
 ENV REFRESH_TOKEN_SECRET_KEY 'secret key'
 ENV GMAIL_ID nyangnyanggompeng@gmail.com
 ENV GMAIL_PW mjixnkkjbakegynw
+ENV S3_ACCESS_KEY_ID AKIA33P3M5BBC4T3NXFW
 
 COPY . /var/www
 WORKDIR /var/www

@@ -19,7 +19,9 @@ const refreshToken = async (req, res, next) => {
                 id: decoded.id,
                 isAdmin: decoded.isAdmin,
                 username: decoded.username,
-                domain: decoded.domain
+                domain: decoded.domain,
+                nickname: decoded.nickname,
+                profile: decoded.profile
               },
               process.env.ACCESS_TOKEN_SECRET_KEY,
               { expiresIn: '60m' }

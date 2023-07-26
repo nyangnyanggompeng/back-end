@@ -15,6 +15,7 @@ const options = {
       }
     ]
   },
+  schemes: ['http', 'https'], // 가능한 통신 방식
   apis: ['./routes/*.js'] //Swagger 파일 연동
 };
 

@@ -25,15 +25,19 @@ const User = (sequelize, DataTypes) => {
         type: DataTypes.TEXT,
         allowNull: false //필수
       },
+      authEmail: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false
+      },
       nickname: {
         type: DataTypes.STRING(8),
         allowNull: false,
         unique: true
       },
-      authEmail: {
-        type: DataTypes.BOOLEAN,
-        allowNull: false,
-        defaultValue: false
+      profile: {
+        type: DataTypes.STRING(200),
+        defaultValue: ''
       },
       useStatus: {
         type: DataTypes.INTEGER,

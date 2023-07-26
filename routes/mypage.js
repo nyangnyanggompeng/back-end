@@ -2,6 +2,7 @@ import express from 'express';
 const router = express.Router();
 
 import auth from '../middleware/auth.js';
+import upload from '../middleware/upload.js';
 import adminAuth from '../middleware/adminAuth.js';
 import userList from '../controller/mypage/userList.js';
 
@@ -20,7 +21,7 @@ import deleteMycomments from '../controller/mypage/deleteMycomments.js';
 
 router.get('/users', auth, adminAuth, userList);
 router.post('/users/email_check', emailCheck);
-router.patch('/users', auth, updateInfo);
+router.patch('/users', auth, upload.single('image'), updateInfo);
 router.patch('/users/reset_password', resetPassword);
 router.put('/users', auth, deleteUser);
 

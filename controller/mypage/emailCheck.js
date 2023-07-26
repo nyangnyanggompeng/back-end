@@ -29,7 +29,8 @@ const emailCheck = async (req, res, next) => {
             isAdmin: users.isAdmin,
             username: users.username,
             domain: users.domain,
-            nickname: users.nickname
+            nickname: users.nickname,
+            profile: users.profile
           },
           process.env.EMAIL_TOKEN_SECRET_KEY,
           { expiresIn: '5m' }

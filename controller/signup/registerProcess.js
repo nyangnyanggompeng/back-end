@@ -40,8 +40,8 @@ const registerProcess = async (req, res, next) => {
             username: username,
             domain: domain,
             password: encryptedPW,
-            nickname: nickname,
             auth_email: false,
+            nickname: nickname,
             useStatus: 1
           });
           return res.status(200).send('USER_CREATED');
