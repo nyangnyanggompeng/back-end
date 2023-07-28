@@ -43,8 +43,23 @@ const searchList = async (req, res, next) => {
         },
         include: [{ model: models.ChatGPTList, attributes: ['name'] }]
       });
+
+      const count = Content.count;
+
       for (let j = 0; j < Content.count; j++) {
-        ContentList.push(Content.rows[j].dataValues);
+        if (Content.rows[j].dataValues.questionNum === 0) {
+          const prompt = Content.rows[j].dataValues.content
+            .split(':')[1]
+            .split(' 이걸 읽고 ')[0];
+          if (prompt.indexOf(content) !== -1) {
+            Content.rows[j].dataValues.content = prompt;
+            ContentList.push(Content.rows[j].dataValues);
+          } else {
+            count = count - 1;
+          }
+        } else {
+          ContentList.push(Content.rows[j].dataValues);
+        }
       }
       numberOfResult += Content.count;
     }

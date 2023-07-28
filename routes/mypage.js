@@ -216,7 +216,7 @@ router.post('/users/email_check', emailCheck);
  *                   type: string
  *                   example: NICKNAME_OR_PROFILE_NOT_ENTERED / NO_EXISTING_USER / INVALID_USER
  */
-router.patch('/users', auth, updateInfo);
+router.patch('/users', auth, upload.single('image'), updateInfo);
 
 /**
  * @swagger
@@ -332,8 +332,6 @@ router.patch('/users/reset_password', resetPassword);
  */
 router.put('/users', auth, deleteUser);
 
-
-
 /**
  * @swagger
  * /mypage/set/bookmark/{page_num}:
@@ -434,8 +432,6 @@ router.get('/set/bookmark/:page_num', auth, getBookmark);
  */
 router.patch('/bookmark/:content_id', auth, setBookmark);
 
-
-
 /**
  * @swagger
  * /api/mypage/posts/{page_num}:
@@ -478,7 +474,7 @@ router.patch('/bookmark/:content_id', auth, setBookmark);
  *                 totalPages:
  *                   type: integer
  *               example:
- *                 Post: 
+ *                 Post:
  *                   - id: 6
  *                     writer: "냥냥곰펭"
  *                     title: "아악"
@@ -547,13 +543,13 @@ router.get('/posts/:page_num', auth, getMypost);
  *                 totalPages:
  *                   type: integer
  *               example:
- *                 Comment: 
+ *                 Comment:
  *                   - id: 6
  *                     writer: "테스트ID"
  *                     content: "댓글3입니다."
  *                     createdAt: "2023-07-11T13:54:46.000Z"
  *                     postId: 3
- *                     Post: 
+ *                     Post:
  *                       title: "제목입니다."
  *                 numberOfMyComment: 1
  *                 totalPages: 1
@@ -624,7 +620,7 @@ router.get('/comments/:page_num', auth, getMycomment);
  *                   type: string
  *               example:
  *                 error: DELETE_MY_POST_FAILURE
- */ 
+ */
 router.put('/posts', auth, deleteMyposts);
 
 /**

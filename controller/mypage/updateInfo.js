@@ -33,6 +33,7 @@ const updateInfo = async (req, res, next) => {
             users.update({ nickname: nickname, profile: profile });
             return res.status(200).send('UPDATE_INFO_SUCCESS');
           } else {
+            console.log('Inside updateInfo');
             return res.status(500).send('UPDATE_INFO_FAILURE');
           }
         }

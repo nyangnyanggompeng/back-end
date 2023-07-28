@@ -48,7 +48,17 @@ app.use(cookieParser());
 app.use(
   '/api',
   (req, res, next) => {
-    res.header('Access-Control-Allow-Origin', 'http://localhost:5173');
+    const allowedOrigins = [
+      'http://localhost:5173',
+      'https://interviewlab.site'
+    ];
+    const origin = req.headers.origin;
+    console.log('origin :', origin);
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      res.header('Access-Control-Allow-Origin', origin);
+    } else {
+      res.header('Access-Contorl-Allow-Origin', 'http://localhost:5173');
+    }
     res.header('Access-Control-Allow-Credentials', 'true');
     res.header(
       'Access-Control-Allow-Headers',
@@ -61,7 +71,6 @@ app.use(
   indexRouter
 );
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-app.use('/static', express.static('public'));
 app.use((req, res, next) => {
   const err = new Error(`${req.method} ${req.url} 찾을 수 없음`);
   err.status = 404;
