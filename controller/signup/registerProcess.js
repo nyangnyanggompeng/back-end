@@ -20,7 +20,11 @@ const registerProcess = async (req, res, next) => {
 
       if (users) {
         // 사용불가 이메일
-        return res.status(400).send('EMAIL_ALREADY_EXISTS');
+        if (users.useStatus === 0) {
+          return res.status(401).send('DELETED_USER');
+        } else {
+          return res.status(400).send('EMAIL_ALREADY_EXISTS');
+        }
       } else if (password !== passwordVerify) {
         // 비밀번호 불일치
         return res.status(400).send('WRONG_PASSWORD');

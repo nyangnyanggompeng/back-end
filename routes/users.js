@@ -14,8 +14,7 @@ import auth from '../middleware/auth.js';
  *   description: 사용자 로그인 로그아웃 및 토큰 새로고침
  */
 router.get('/auth', auth, (req, res) => {
-  console.log(req.decoded);
-  return res.status(200).send(req.decoded);
+  return res.status(200).json(req.user);
 });
 
 /**

@@ -17,7 +17,7 @@ const upload = multer({
     bucket: 'nyangnyanggompeng',
     acl: 'public-read',
     key(req, file, cb) {
-      cb(null, `post/${+new Date()}${path.basename(file.originalname)}`);
+      cb(null, `post/${+new Date()}${path.extname(file.originalname)}`);
     }
   }),
   limits: { fileSize: 5 * 1024 * 1024 }

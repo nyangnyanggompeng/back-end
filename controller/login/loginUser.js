@@ -35,9 +35,7 @@ const loginUser = async (req, res, next) => {
               id: users.id,
               isAdmin: users.isAdmin,
               username: users.username,
-              domain: users.domain,
-              nickname: users.nickname,
-              profile: users.profile
+              domain: users.domain
             },
             process.env.ACCESS_TOKEN_SECRET_KEY,
             { expiresIn: '60m' }
@@ -47,9 +45,7 @@ const loginUser = async (req, res, next) => {
               id: users.id,
               isAdmin: users.isAdmin,
               username: users.username,
-              domain: users.domain,
-              nickname: users.nickname,
-              profile: users.profile
+              domain: users.domain
             },
             process.env.REFRESH_TOKEN_SECRET_KEY,
             { expiresIn: '1d' }

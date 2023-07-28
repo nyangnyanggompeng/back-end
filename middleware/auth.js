@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
+import models from '../models/index.js';
 import cookieParser from 'cookie-parser';
 dotenv.config();
 
@@ -14,6 +15,18 @@ const auth = async (req, res, next) => {
       req.cookies.accessToken,
       process.env.ACCESS_TOKEN_SECRET_KEY
     );
+
+    req.user = await models.User.findOne({
+      attributes: [
+        'id',
+        'isAdmin',
+        'username',
+        'domain',
+        'nickname',
+        'profile'
+      ],
+      where: { id: req.decoded.id }
+    });
 
     return next();
   } catch (err) {

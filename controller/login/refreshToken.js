@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+import models from '../../models/index.js';
 
 const refreshToken = async (req, res, next) => {
   try {
@@ -8,20 +9,21 @@ const refreshToken = async (req, res, next) => {
       jwt.verify(
         refreshToken,
         process.env.REFRESH_TOKEN_SECRET_KEY,
-        (err, decoded) => {
+        async (err, decoded) => {
           if (err) {
             // 에러 있으면 -> refresh token 썩었으므로 다시 로그인 시킴
             return res.status(400).send('ROTTEN_TOKEN');
           } else {
             // 정상적인 토큰 -> 다시 access token 발급
+            const users = await models.User.findOne({
+              where: { id: decoded.id }
+            });
             const accessToken = jwt.sign(
               {
-                id: decoded.id,
-                isAdmin: decoded.isAdmin,
-                username: decoded.username,
-                domain: decoded.domain,
-                nickname: decoded.nickname,
-                profile: decoded.profile
+                id: users.id,
+                isAdmin: users.isAdmin,
+                username: users.username,
+                domain: users.domain
               },
               process.env.ACCESS_TOKEN_SECRET_KEY,
               { expiresIn: '60m' }

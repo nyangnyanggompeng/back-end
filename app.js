@@ -53,7 +53,6 @@ app.use(
       'https://interviewlab.site'
     ];
     const origin = req.headers.origin;
-    console.log('origin :', origin);
     if (allowedOrigins.indexOf(origin) !== -1) {
       res.header('Access-Control-Allow-Origin', origin);
     } else {

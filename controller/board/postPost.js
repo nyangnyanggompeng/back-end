@@ -6,8 +6,8 @@ const postPost = async (req, res, next) => {
   try {
     const userId = req.decoded.id;
     const isAdmin = req.decoded.isAdmin;
-    const nickname = req.decoded.nickname;
-    console.log('req.decoded = ', req.decoded);
+    const nickname = req.user.nickname;
+
     const { title, content } = req.body;
 
     if (!title || !content) {
