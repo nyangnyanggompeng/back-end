@@ -6,12 +6,6 @@ import idCheck from '../controller/signup/idcheck.js';
 import passwordCheck from '../controller/signup/passwordCheck.js';
 import nicknameCheck from '../controller/signup/nicknameCheck.js';
 
-/**
- * @swagger
- * tags:
- *   name: Register
- *   description: 사용자 추가 및 아이디 비밀번호 닉네임 유효성 체크
- */
 router.get('/', (req, res) => {
   res.render('register', {}); // views 폴더 밑에 있는 파일을 참조함
 });
@@ -22,8 +16,6 @@ router.get('/', (req, res) => {
  *   post:
  *     summary: 사용자 생성
  *     tags: [Register]
- *     consumes:
- *       - application/json
  *     parameters:
  *       - in: body
  *         name: userInfo
@@ -52,13 +44,32 @@ router.get('/', (req, res) => {
  *             nickname:
  *               type: string
  *               description: 사용자의 닉네임
+ *           example:
+ *             username: test
+ *             domain:  gmail.com
+ *             password: Testpwd1
+ *             passwordVerify: Testpwd1
+ *             nickname: 냥냥곰펭
  *     responses:
  *       200:
  *         description: 사용자 생성 성공
+ *         content: 
+ *            text/html:
+ *              example: USER_CREATED
  *       400:
  *         description: 필수 값 누락, 중복된 이메일, 중복된 닉네임, 비밀번호 유효성 검사 실패, 비밀번호 불일치
+ *         content: 
+ *            text/html:
+ *              example: EMAIL_OR_PASSWORD_OR_NICKNAME_NOT_ENTERED
+ *                     / EMAIL_ALREADY_EXISTS
+ *                     / NICKNAME_ALREADY_EXISTS
+ *                     / INVALID_PASSWORD
+ *                     / PASSWORD_NOT_MATCH
  *       500:
  *         description: 사용자 생성 실패
+ *         content: 
+ *            text/html:
+ *              example: USER_CREATED_FAILURE
  */
 router.post('/register_process', registerProcess);
 
@@ -68,8 +79,6 @@ router.post('/register_process', registerProcess);
  *   post:
  *     summary: 아이디 중복 체크
  *     tags: [Register]
- *     consumes:
- *       - application/json
  *     parameters:
  *       - in: body
  *         name: emailInfo
@@ -86,13 +95,25 @@ router.post('/register_process', registerProcess);
  *             domain:
  *               type: string
  *               description: 이메일 주소의 도메인 부분
+ *           example:
+ *             username: test
+ *             domain: gmail.com
  *     responses:
  *       200:
- *         description: 아이디 중복 체크 성공. AVAILABLE_EMAIL 메시지 반환
+ *         description: 아이디 중복 체크 성공.
+ *         content: 
+ *            text/html:
+ *              example: AVAILABLE_EMAIL
  *       400:
  *         description: 필수 값 누락, 중복된 이메일
+ *         content: 
+ *            text/html:
+ *              example: EMAIL_NOT_ENTERED / EMAIL_ALREADY_EXISTS
  *       500:
  *         description: 아이디 중복 체크 실패
+ *         content: 
+ *            text/html:
+ *              example: EMAIL_CHECK_FAILURE
  */
 router.post('/idcheck', idCheck);
 
@@ -102,8 +123,6 @@ router.post('/idcheck', idCheck);
  *   post:
  *     summary: 비밀번호 유효성 체크
  *     tags: [Register]
- *     consumes:
- *       - application/json
  *     parameters:
  *       - in: body
  *         name: passwordInfo
@@ -120,13 +139,27 @@ router.post('/idcheck', idCheck);
  *             passwordVerify:
  *               type: string
  *               description: 비밀번호 확인
+ *           example:
+ *             password: Test123!@
+ *             passwordVerify: Test123!@
  *     responses:
  *       200:
  *         description: 비밀번호 유효성 검사 성공.
+ *         content: 
+ *            text/html:
+ *              example: VAILD_PASSWORD
  *       400:
  *         description: 필수 값 누락, 서버 유효성 검사 실패, 비밀번호 불일치
+ *         content: 
+ *            text/html:
+ *              example: PASSWORD_OR_PASSWORD_VERIFY_NOT_ENTERED
+ *                     / INVALID_FORM
+ *                     / PASSWORD_NOT_MATCH
  *       500:
  *         description: 비밀번호 유효성 검사 실패
+ *         content: 
+ *            text/html:
+ *              example: PASSWORD_CHECK_FAILURE
  */
 router.post('/password_check', passwordCheck);
 
@@ -136,8 +169,6 @@ router.post('/password_check', passwordCheck);
  *   post:
  *     summary: 닉네임 중복 체크
  *     tags: [Register]
- *     consumes:
- *       - application/json
  *     parameters:
  *       - in: body
  *         name: nicknameInfo
@@ -150,13 +181,24 @@ router.post('/password_check', passwordCheck);
  *             nickname:
  *               type: string
  *               description: 사용자의 닉네임
+ *           example:
+ *             nickname: 냥냥곰펭
  *     responses:
  *       200:
- *         description: 닉네임 중복 체크 성공.
+ *         description: 닉네임 중복 체크 성공
+ *         content: 
+ *            text/html:
+ *              example: AVAILABLE_NICKNAME
  *       400:
  *         description: 필수 값 누락 또는 중복된 닉네임
+ *         content: 
+ *            text/html:
+ *              example: NICKNAME_NOT_ENTERED / NICKNAME_ALREADY_EXISTS
  *       500:
  *         description: 닉네임 중복 체크 실패
+ *         content: 
+ *            text/html:
+ *              example: NICKNAME_CHECK_FAILURE
  */
 router.post('/nickname_check', nicknameCheck);
 

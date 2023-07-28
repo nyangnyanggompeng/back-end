@@ -7,7 +7,7 @@ const saltRounds = 10;
 const resetPassword = async (req, res, next) => {
   try {
     const id = req.decoded.id;
-    const { password, passwordVerify } = req.body;
+    const { currentPassword, password, passwordVerify } = req.body;
 
     if (!password || !passwordVerify) {
       return res.status(400).send('PASSWORD_OR_PASSWORD_VERIFY_NOT_ENTERED');
@@ -19,12 +19,22 @@ const resetPassword = async (req, res, next) => {
         where: { id: id }
       });
 
-      const check = await bcrypt.compare(password, users.password);
-      if (!check) {
-        await users.update({ password: encryptedPW });
-        return res.status(200).send('RESET_PASSWORD_SUCCESS');
+      const currentPasswordCheck = await bcrypt.compare(currentPassword, users.password);
+      if (!currentPasswordCheck) {
+        return res.status(400).send('INVALID_CURRENT_PASSWORD');
       } else {
-        return res.status(400).send('CURRENT_USING_PASSWORD');
+        const newPasswordCheck = await bcrypt.compare(password, users.password);
+        if (!newPasswordCheck) {
+          const re = /^[0-9a-zA-Z`~!@#$%^&*()-_=+?]{8,12}$/;
+          if (re.test(password)) {
+            await users.update({ password: encryptedPW });
+            return res.status(200).send('RESET_PASSWORD_SUCCESS');
+          } else {
+            return res.status(400).send('INVALID_FORM');
+          }
+        } else {
+          return res.status(400).send('CURRENT_USING_PASSWORD');
+        }
       }
     }
   } catch (err) {

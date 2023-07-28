@@ -16,13 +16,40 @@ router.get('/', (req, res) => {
  * @swagger
  * tags:
  *   name: Users
- *   description: 유저 추가 수정 삭제 조회
+ *   description: 사용자 로그인 로그아웃 및 토큰
  */
 router.use('/users', usersRouter);
 
+/**
+ * @swagger
+ * tags:
+ *   name: ChatGPT
+ *   description: ChatGPT
+ */
 router.use('/chatgpt', chatgptrouter);
+
+/**
+ * @swagger
+ * tags:
+ *   name: Register
+ *   description: 사용자 추가 및 아이디 비밀번호 닉네임 유효성 체크
+ */
 router.use('/register', registerRouter);
+
+/**
+ * @swagger
+ * tags:
+ *   name: Board
+ *   description: 게시판
+ */
 router.use('/board', boardRouter);
+
+/**
+ * @swagger
+ * tags:
+ *    name: Mypage
+ *    description: 마이페이지
+ */
 router.use('/mypage', mypageRouter);
 
 export default router;

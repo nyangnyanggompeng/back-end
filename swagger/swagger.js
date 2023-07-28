@@ -11,7 +11,7 @@ const options = {
     },
     servers: [
       {
-        url: 'https://api.interviewlab.site/' // 요청 URL
+        url: 'http://localhost:5050' // 요청 URL
       }
     ]
   },
