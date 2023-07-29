@@ -1,7 +1,7 @@
 // PUT /chatgpt/list/:list_id/content
 // 대화 내용 삭제
 import models from '../../models/index.js';
-import { Op } from 'sequelize';
+// import { Op } from 'sequelize';
 
 const deleteContent = async (req, res, next) => {
   try {
@@ -18,6 +18,10 @@ const deleteContent = async (req, res, next) => {
           id: contentIdList[i]
         }
       });
+
+      if (listId !== Content.listId) {
+        return res.status(400).send('LIST_ID_DOSENT_MATCH');
+      }
 
       const List = await models.ChatGPTList.findOne({
         where: {
@@ -38,7 +42,8 @@ const deleteContent = async (req, res, next) => {
       } else {
         await models.ChatGPTContent.destroy({
           where: {
-            [Op.and]: [{ listId: listId }, { questionNum: questionNum }]
+            id: contentIdList[i]
+            // [Op.and]: [{ questionNum: questionNum }, { listId: listId }]
           }
         });
       }
