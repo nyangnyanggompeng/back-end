@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-import update from '../controller/mypage/update.js';
+
 import auth from '../middleware/auth.js';
 import upload from '../middleware/upload.js';
 import adminAuth from '../middleware/adminAuth.js';
