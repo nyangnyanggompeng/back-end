@@ -10,45 +10,42 @@ const registerProcess = async (req, res, next) => {
       // 입력값 누락
       return res.status(400).send('EMAIL_OR_PASSWORD_OR_NICKNAME_NOT_ENTERED');
     } else {
-      const users = await models.User.findOne({
-        where: { username: username, domain: domain }
-      });
       const usersNickname = await models.User.findOne({
         // nickname 조건 만족하는지 체크
         where: { nickname: nickname }
       });
 
-      if (users) {
-        // 사용불가 이메일
-        if (users.useStatus === 0) {
-          return res.status(401).send('DELETED_USER');
-        } else {
-          return res.status(400).send('EMAIL_ALREADY_EXISTS');
-        }
-      } else if (password !== passwordVerify) {
+      if (password !== passwordVerify) {
         // 비밀번호 불일치
         return res.status(400).send('WRONG_PASSWORD');
       } else if (usersNickname) {
         // 사용불가 닉네임
         return res.status(400).send('NICKNAME_ALREADY_EXISTS');
+      } else if (!req.cookies.authResult) {
+        return res.status(400).send('EMAIL_AUTHENTICATION_TIMEOUT');
       } else {
-        const re = /^[0-9a-zA-Z`~!@#$%^&*()-_=+?]{8,12}$/;
-        if (!re.test(password)) {
-          // 비밀번호 조건 (영문자, 숫자, 특수기호, 8이상 12이하) 만족하는지 체크 - 비밀번호 유효성 검사 실패
-          return res.status(400).send('INVALID_PASSWORD');
+        if (req.cookies.authResult !== 'success') {
+          return res.status(400).send('EMAIL_AUTHENTICATION_FAILURE');
         } else {
-          const encryptedPW = bcrypt.hashSync(password, saltRounds); // 비밀번호 암호화
-          await models.User.create({
-            // new db 생성
-            isAdmin: false,
-            username: username,
-            domain: domain,
-            password: encryptedPW,
-            auth_email: false,
-            nickname: nickname,
-            useStatus: 1
-          });
-          return res.status(200).send('USER_CREATED');
+          const re = /^[0-9a-zA-Z`~!@#$%^&*()-_=+?]{8,12}$/;
+          if (!re.test(password)) {
+            // 비밀번호 조건 (영문자, 숫자, 특수기호, 8이상 12이하) 만족하는지 체크 - 비밀번호 유효성 검사 실패
+            return res.status(400).send('INVALID_PASSWORD');
+          } else {
+            const encryptedPW = bcrypt.hashSync(password, saltRounds); // 비밀번호 암호화
+            await models.User.create({
+              // new db 생성
+              isAdmin: false,
+              username: username,
+              domain: domain,
+              password: encryptedPW,
+              auth_email: true,
+              nickname: nickname,
+              useStatus: 1
+            });
+            res.clearCookie('authResult', { sameSite: 'none', secure: true });
+            return res.status(200).send('USER_CREATED');
+          }
         }
       }
     }

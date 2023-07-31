@@ -9,7 +9,7 @@ import auth from '../middleware/auth.js';
 
 /**
  * @swagger
- * /api/users/auth:
+ * /users/auth:
  *   post:
  *     summary: 토큰 인증 결과 반환
  *     tags: [Users]
@@ -21,7 +21,7 @@ import auth from '../middleware/auth.js';
  *             schema:
  *               type: object
  *               properties:
- *                  id: 
+ *                  id:
  *                    type: integer
  *                  isAdmin:
  *                    type: boolean
@@ -42,12 +42,12 @@ import auth from '../middleware/auth.js';
  *                  profile: post/1690537631865.png
  *       401:
  *         description: 토큰 비밀 키 불일치
- *         content: 
+ *         content:
  *            text/html:
  *              example: INVALID_TOKEN
  *       419:
  *         description: 토큰 유효 시간 초과
- *         content: 
+ *         content:
  *            text/html:
  *              example: TOKEN_EXPIRED
  */
@@ -57,7 +57,7 @@ router.get('/auth', auth, (req, res) => {
 
 /**
  * @swagger
- * /api/users/login:
+ * /users/login:
  *   post:
  *     summary: 사용자 로그인
  *     tags: [Users]
@@ -99,29 +99,29 @@ router.get('/auth', auth, (req, res) => {
  *                refreshToken:
  *                   type: string
  *                   description: 갱신 토큰
- *              example: 
+ *              example:
  *                accessToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTQsImlzQWRtaW4iOmZhbHNlLCJ1c2VybmFtZSI6ImhvbWV0ZXN0IiwiZG9tYWluIjoiZ21haWdsfgasdffd
  *                refreshToken: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaXNBZG1sdfsdfasdf11rdjtMk9UXxoasdfasdfadf.asdfasdfasdfasdfasdfasdfasdfasdfadsdf
  *       400:
  *         description: 필수 값 누락, DB에 없는 사용자, 탈퇴한 사용자일 경우
- *         content: 
+ *         content:
  *            text/html:
- *              example: EMAIL_OR_PASSWORD_NOT_ENTERED 
- *                     / EMAIL_DOESNT_EXIST 
+ *              example: EMAIL_OR_PASSWORD_NOT_ENTERED
+ *                     / EMAIL_DOESNT_EXIST
  *                     / DELETED_USER
  *       401:
  *         description: 토큰 비밀 키 불일치
- *         content: 
+ *         content:
  *            text/html:
  *              example: INVALID_TOKEN
  *       419:
  *         description: 토큰 유효 시간 초과
- *         content: 
+ *         content:
  *            text/html:
  *              example: TOKEN_EXPIRED
  *       500:
  *         description: 로그인 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: LOGIN_FAILURE
  */
@@ -129,19 +129,19 @@ router.post('/login', loginUser);
 
 /**
  * @swagger
- * /api/users/logout:
+ * /users/logout:
  *   get:
  *     summary: 사용자 로그아웃
  *     tags: [Users]
  *     responses:
  *       200:
  *         description: 로그아웃 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: LOGOUT_SUCCESS
  *       500:
  *         description: 로그아웃 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: LOGOUT_FAILURE
  */
@@ -170,17 +170,17 @@ router.get('/logout', logoutUser);
  *     responses:
  *       200:
  *         description: 토큰 새로 고침 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: ACCESS_TOKEN_CREATED
  *       400:
  *         description: Refresh 토큰이 없는 경우, 유효 시간 초과
- *         content: 
+ *         content:
  *            text/html:
  *              example: INVALID_TOKEN / ROTTEN_TOKEN
  *       500:
  *         description: 토큰 새로 고침 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: ACCESS_TOKEN_CREATED_FAILURE
  */

@@ -1,6 +1,6 @@
 import express from 'express';
 const router = express.Router();
-
+import update from '../controller/mypage/update.js';
 import auth from '../middleware/auth.js';
 import upload from '../middleware/upload.js';
 import adminAuth from '../middleware/adminAuth.js';
@@ -21,9 +21,10 @@ import deleteMycomments from '../controller/mypage/deleteMycomments.js';
 
 /**
  * @swagger
- * /api/mypage/users:
+ * /mypage/users:
  *   get:
  *     tags: [Mypage]
+ *     summary: 전체 유저 목록 반환
  *     description: 전체 유저 목록 반환 (admin)
  *     responses:
  *       200:
@@ -48,22 +49,22 @@ import deleteMycomments from '../controller/mypage/deleteMycomments.js';
  *                   deletedAt: null
  *       500:
  *         description: 전체 유저 목록 반환 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: GET_USERLIST_FAILURE
  *       403:
  *         description: 접근 권한 없음
- *         content: 
+ *         content:
  *            text/html:
  *              example: NEED_AUTHORIZATION
  *       419:
  *         description: 토큰 유효 시간 초과
- *         content: 
+ *         content:
  *            text/html:
  *              example: TOKEN_EXPIRED
  *       401:
  *         description: 토큰 비밀 키 불일치
- *         content: 
+ *         content:
  *            text/html:
  *              example: INVALID_TOKEN
  * components:
@@ -101,14 +102,15 @@ router.get('/users', auth, adminAuth, userList);
 
 /**
  * @swagger
- * /api/mypage/users/email_check:
+ * /mypage/users/email_check:
  *   post:
  *     tags: [Mypage]
+ *     summary: 이메일 인증
  *     description: 이메일 인증
  *     parameters:
  *       - in: body
- *         name: userInfo
- *         description: 전체 유저 목록 반환 (admin)
+ *         name: emailInfo
+ *         description: 이메일 정보
  *         schema:
  *           type: object
  *           required:
@@ -129,12 +131,12 @@ router.get('/users', auth, adminAuth, userList);
  *               example: 117223
  *       500:
  *         description: 이메일 인증 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: EMAIL_CHECK_FAILURE
  *       400:
  *         description: 필수 값 누락 혹은 해당 이메일을 가진 사용자가 없는 경우
- *         content: 
+ *         content:
  *            text/html:
  *              example: EMAIL_NOT_ENTERED / EMAIL_DOESNT_EXISTS
  */
@@ -145,6 +147,7 @@ router.post('/users/email_check', emailCheck);
  * /mypage/users:
  *   patch:
  *     tags: [Mypage]
+ *     summary: 선택한 유저의 정보 수정
  *     description: 선택한 유저의 정보 수정(로그인한 유저와 admin만 수정 가능)
  *     requestBody:
  *       required: true
@@ -161,17 +164,17 @@ router.post('/users/email_check', emailCheck);
  *     responses:
  *       200:
  *         description: 선택한 유저의 정보 수정 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: UPDATE_INFO_SUCCESS
  *       500:
  *         description: 선택한 유저의 정보 수정 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: UPDATE_INFO_FAILURE
  *       400:
  *         description: 입력 값 모두 누락, DB에 없는 유저, 혹은 유저 정보가 토큰 정보와 일치하지 않는 경우
- *         content: 
+ *         content:
  *            text/html:
  *              example: NICKNAME_OR_PROFILE_NOT_ENTERED
  *                     / NO_EXISTING_USER
@@ -181,9 +184,10 @@ router.patch('/users', auth, upload.single('image'), updateInfo);
 
 /**
  * @swagger
- * /api/mypage/users/reset_password:
+ * /mypage/users/reset_password:
  *   patch:
  *     tags: [Mypage]
+ *     summary: 선택한 유저의 비밀번호 변경
  *     description: 선택한 유저의 비밀번호 변경(로그인한 유저와 admin만 수정 가능)
  *     requestBody:
  *       required: true
@@ -208,18 +212,18 @@ router.patch('/users', auth, upload.single('image'), updateInfo);
  *     responses:
  *       200:
  *         description: 비밀번호 변경 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: RESET_PASSWORD_SUCCESS
  *       500:
  *         description: 비밀번호 변경 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: RESET_PASSWORD_FAILURE
  *       400:
  *         description: 필수 값 누락, 비밀번호 불일치, 현재 비밀번호 불일치, 현재 사용중인 비밀번호와 변경할 비밀번호가 같은 경우
  *                      혹은 비밀번호 유효성 검사 실패한 경우
- *         content: 
+ *         content:
  *            text/html:
  *              example: PASSWORD_OR_PASSWORD_VERIFY_NOT_ENTERED
  *                     / PASSWORD_NOT_MATCHED
@@ -234,6 +238,7 @@ router.patch('/users/reset_password', auth, resetPassword);
  * /mypage/users:
  *   put:
  *     tags: [Mypage]
+ *     summary: 유저 삭제
  *     description: 유저 삭제(로그인한 유저와 admin만 삭제 가능)
  *     requestBody:
  *       required: true
@@ -249,22 +254,22 @@ router.patch('/users/reset_password', auth, resetPassword);
  *     responses:
  *       200:
  *         description: 유저 삭제 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: DELETE_USER_SUCCESS
  *       500:
  *         description: 유저 삭제 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: DELETE_USER_FAILURE
  *       400:
  *         description: 필수 값 누락 혹은 DB 속 비밀번호와 불일치
- *         content: 
+ *         content:
  *            text/html:
  *              example: PASSWORD_NOT_ENTERED / INVALID_PASSWORD
  *       401:
  *         description: 권한이 없는 사용자가 접근했을 시
- *         content: 
+ *         content:
  *            text/html:
  *              example: UNAUTHORIZED
  */
@@ -289,20 +294,20 @@ router.put('/users', auth, deleteUser);
  *         content:
  *           application/json:
  *             schema:
- *               items: 
+ *               items:
  *                  $ref: '#/components/schemas/Bookmark'
  *             examples:
  *                example1:
  *                 summary: 북마크한 내용이 있는 경우
  *                 value:
- *                  Content: 
+ *                  Content:
  *                    - id: 2
- *                      content: 1. 자기소개서에서 언급한 IT 기술의 발전과 관련하여 현재 학습 중이거나 관심 있는 기술은 무엇인가요? 이 기술을 어떻게 학습하고 활용하려고 계획하고 있나요? 
+ *                      content: 1. 자기소개서에서 언급한 IT 기술의 발전과 관련하여 현재 학습 중이거나 관심 있는 기술은 무엇인가요? 이 기술을 어떻게 학습하고 활용하려고 계획하고 있나요?
  *                      listId: 1
  *                      ChatGPTList:
  *                         name: 대화목록1
  *                    - id: 3
- *                      content: 2. 팀 프로젝트에서의 소통 능력을 발휘하여 어떤 성과를 달성한 적이 있나요? 이를 통해 어떤 교훈을 얻었나요? 
+ *                      content: 2. 팀 프로젝트에서의 소통 능력을 발휘하여 어떤 성과를 달성한 적이 있나요? 이를 통해 어떤 교훈을 얻었나요?
  *                      listId: 1
  *                      ChatGPTList:
  *                         name: 대화목록1
@@ -316,10 +321,10 @@ router.put('/users', auth, deleteUser);
  *                  totalPages: 0
  *       500:
  *         description: 북마크 조회 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: GET_BOOKMARK_FAILURE
- * 
+ *
  * components:
  *   schemas:
  *     Bookmark:
@@ -350,7 +355,7 @@ router.get('/set/bookmark/:page_num', auth, getBookmark);
 
 /**
  * @swagger
- * /api/chatgpt/bookmark/{content_id}:
+ * /chatgpt/bookmark/{content_id}:
  *   patch:
  *     tags: [Mypage]
  *     summary: 북마크 생성 또는 삭제
@@ -368,12 +373,12 @@ router.get('/set/bookmark/:page_num', auth, getBookmark);
  *     responses:
  *       200:
  *         description: 북마크 생성 또는 삭제 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: SET_BOOKMARK_SUCCESS
  *       500:
  *         description: 북마크 생성 또는 삭제 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: SET_BOOKMARK_FAILURE
  */
@@ -381,7 +386,7 @@ router.patch('/bookmark/:content_id', auth, setBookmark);
 
 /**
  * @swagger
- * /api/mypage/posts/{page_num}:
+ * /mypage/posts/{page_num}:
  *   get:
  *     tags: [Mypage]
  *     summary: 내가 쓴 게시글 조회
@@ -398,7 +403,7 @@ router.patch('/bookmark/:content_id', auth, setBookmark);
  *         content:
  *           application/json:
  *             schema:
- *               items: 
+ *               items:
  *                  $ref: '#/components/schemas/Mypost'
  *             examples:
  *               example1:
@@ -425,10 +430,10 @@ router.patch('/bookmark/:content_id', auth, setBookmark);
  *                  totalPages: 0
  *       500:
  *         description: 게시글 조회 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: GET_MY_POST_FAILURE
- * 
+ *
  * components:
  *   schemas:
  *     Mypost:
@@ -459,7 +464,7 @@ router.get('/posts/:page_num', auth, getMypost);
 
 /**
  * @swagger
- * /api/mypage/comments/{page_num}:
+ * /mypage/comments/{page_num}:
  *   get:
  *     tags: [Mypage]
  *     summary: 내가 쓴 댓글 조회
@@ -476,7 +481,7 @@ router.get('/posts/:page_num', auth, getMypost);
  *         content:
  *           application/json:
  *             schema:
- *               items: 
+ *               items:
  *                  $ref: '#/components/schemas/Comment'
  *             examples:
  *               example1:
@@ -500,10 +505,10 @@ router.get('/posts/:page_num', auth, getMypost);
  *                     totalPages: 0
  *       500:
  *         description: 댓글 조회 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: GET_MY_COMMENT_FAILURE
- * 
+ *
  * components:
  *   schemas:
  *     Comment:
@@ -527,8 +532,8 @@ router.get('/posts/:page_num', auth, getMypost);
  *                  type: integer
  *               Post:
  *                  type: object
- *                  properties: 
- *                      title: 
+ *                  properties:
+ *                      title:
  *                          type: string
  *         numberOfMyComment:
  *           type: integer
@@ -539,7 +544,7 @@ router.get('/comments/:page_num', auth, getMycomment);
 
 /**
  * @swagger
- * /api/mypage/posts:
+ * /mypage/posts:
  *   put:
  *     tags: [Mypage]
  *     summary: 내가 쓴 게시글 삭제
@@ -559,17 +564,17 @@ router.get('/comments/:page_num', auth, getMycomment);
  *     responses:
  *       200:
  *         description: 게시글 삭제 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: DELETE_MY_POST_SUCCESS
  *       400:
  *         description: 선택한 게시글이 없음
- *         content: 
+ *         content:
  *            text/html:
  *              example: EMPTY_POST_ID_LIST
  *       500:
  *         description: 게시글 삭제 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: DELETE_MY_POST_FAILURE
  */
@@ -577,7 +582,7 @@ router.put('/posts', auth, deleteMyposts);
 
 /**
  * @swagger
- * /api/mypage/comments:
+ * /mypage/comments:
  *   put:
  *     tags: [Mypage]
  *     summary: 내가 쓴 댓글 삭제
@@ -597,17 +602,17 @@ router.put('/posts', auth, deleteMyposts);
  *     responses:
  *       200:
  *         description: 댓글 삭제 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: DELETE_MY_COMMENT_SUCCESS
  *       400:
  *         description: 선택한 댓글이 없음
- *         content: 
+ *         content:
  *            text/html:
  *              example: EMPTY_COMMENT_ID_LIST
  *       500:
  *         description: 댓글 삭제 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: DELETE_MY_COMMENT_FAILURE
  */

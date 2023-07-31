@@ -15,10 +15,9 @@ import deleteComment from '../controller/board/deleteComment.js';
 
 import auth from '../middleware/auth.js';
 
-
 /**
  * @swagger
- * /api/board/{page_num}:
+ * /board/{page_num}:
  *   get:
  *     tags: [Board]
  *     summary: 페이지 별 해당 게시글 목록 전송
@@ -35,7 +34,7 @@ import auth from '../middleware/auth.js';
  *         content:
  *           application/json:
  *             schema:
- *               items: 
+ *               items:
  *                  $ref: '#/components/schemas/Board'
  *             examples:
  *               example1:
@@ -64,10 +63,10 @@ import auth from '../middleware/auth.js';
  *                     totalPages: 0
  *       500:
  *         description: 댓글 조회 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: GET_MY_COMMENT_FAILURE
- * 
+ *
  * components:
  *   schemas:
  *     Board:
@@ -100,7 +99,7 @@ router.get('/:page_num', auth, getPostlist); // localhost:5000/api/board/:page_n
 
 /**
  * @swagger
- * /api/board/posts/{post_id}:
+ * /board/posts/{post_id}:
  *   get:
  *     tags: [Board]
  *     summary: 해당 게시글 조회
@@ -130,7 +129,7 @@ router.get('/:page_num', auth, getPostlist); // localhost:5000/api/board/:page_n
  *                   type: string
  *                userId:
  *                   type: integer
- *              example: 
+ *              example:
  *                id: 1
  *                writer: 냥냥곰펭
  *                title: 제목1입니다.
@@ -139,7 +138,7 @@ router.get('/:page_num', auth, getPostlist); // localhost:5000/api/board/:page_n
  *                userId: 1
  *       500:
  *         description: 게시글 조회 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: POST_GET_FAILURE
  */
@@ -147,7 +146,7 @@ router.get('/posts/:post_id', auth, getPost); // localhost:5000/api/board/posts/
 
 /**
  * @swagger
- * /api/board:
+ * /board:
  *   post:
  *     summary: 게시글 등록
  *     tags: [Board]
@@ -171,17 +170,17 @@ router.get('/posts/:post_id', auth, getPost); // localhost:5000/api/board/posts/
  *     responses:
  *       200:
  *         description: 게시글 등록 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: POST_POST_SUCCESS
  *       400:
  *         description: 필수 값 누락
- *         content: 
+ *         content:
  *            text/html:
  *              example: TITLE_OR_CONTENT_NO_ENTERED
  *       500:
  *         description: 게시글 등록 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: POST_POST_FAILURE
  */
@@ -189,7 +188,7 @@ router.post('/', auth, postPost); // localhost:5000/api/board/:user_id
 
 /**
  * @swagger
- * /api/board/{post_id}:
+ * /board/{post_id}:
  *   patch:
  *     tags: [Board]
  *     summary: 선택한 게시글 수정
@@ -219,22 +218,22 @@ router.post('/', auth, postPost); // localhost:5000/api/board/:user_id
  *     responses:
  *       200:
  *         description: 게시글 등록 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: UPDATE_POST_SUCCESS
  *       500:
  *         description: 게시글 등록 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: UPDATE_POST_FAILURE
  *       400:
  *         description: 필수값 누락 및 해당 게시글 없을 경우
- *         content: 
+ *         content:
  *            text/html:
  *              example: TITLE_OR_CONTENT_NO_ENTERED / POST_DOESNT_EXIST
  *       401:
  *         description: 해당 게시글을 작성한 유저 또는 admin이 아닌 경우
- *         content: 
+ *         content:
  *            text/html:
  *              example: NO_PERMISSIONS
  */
@@ -242,7 +241,7 @@ router.patch('/:post_id', auth, updatePost); // localhost:5000/api/board/:post_i
 
 /**
  * @swagger
- * /api/board/{post_id}:
+ * /board/{post_id}:
  *   put:
  *     tags: [Board]
  *     summary: 선택한 게시글 삭제
@@ -256,22 +255,22 @@ router.patch('/:post_id', auth, updatePost); // localhost:5000/api/board/:post_i
  *     responses:
  *       200:
  *         description: 게시글 삭제 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: POST_DELETE_SUCCESS
  *       500:
  *         description: 게시글 삭제 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: POST_DELETE_FAILURE
  *       400:
  *         description: 해당 게시글 없을 경우
- *         content: 
+ *         content:
  *            text/html:
  *              example: POST_DOESNT_EXIST
  *       401:
  *         description: 해당 게시글을 작성한 유저 또는 admin이 아닌 경우
- *         content: 
+ *         content:
  *            text/html:
  *              example: NO_PERMISSIONS
  */
@@ -279,7 +278,7 @@ router.put('/:post_id', auth, deletePost); // localhost:5000/api/board/:post_id
 
 /**
  * @swagger
- * /api/board/{post_id}/comments/{page_num}:
+ * /board/{post_id}/comments/{page_num}:
  *   get:
  *     tags: [Board]
  *     summary: 해당 댓글 조회
@@ -302,7 +301,7 @@ router.put('/:post_id', auth, deletePost); // localhost:5000/api/board/:post_id
  *         content:
  *           application/json:
  *             schema:
- *               items: 
+ *               items:
  *                  $ref: '#/components/schemas/BoardComment'
  *             examples:
  *               example1:
@@ -324,10 +323,10 @@ router.put('/:post_id', auth, deletePost); // localhost:5000/api/board/:post_id
  *                     totalPages: 0
  *       400:
  *         description: 댓글 조회 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: COMMENT_GET_FAILURE
- * 
+ *
  * components:
  *   schemas:
  *     BoardComment:
@@ -358,7 +357,7 @@ router.get('/:post_id/comments/:page_num', auth, getComment); // localhost:5000/
 
 /**
  * @swagger
- * /api/board/{post_id}/comments:
+ * /board/{post_id}/comments:
  *   post:
  *     tags: [Board]
  *     summary: 해당 게시글에 댓글 등록하기
@@ -384,17 +383,17 @@ router.get('/:post_id/comments/:page_num', auth, getComment); // localhost:5000/
  *     responses:
  *       200:
  *         description: 댓글 등록 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: POST_COMMENT_SUCCESS
  *       500:
  *         description: 댓글 조회 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: POST_COMMENT_FAILURE
  *       400:
  *         description: 필수 값이 없거나 댓글을 등록할 게시글이 없는 경우
- *         content: 
+ *         content:
  *            text/html:
  *              example: CONTENT_NO_ENTERED / POST_DOESNT_EXIST
  */
@@ -402,7 +401,7 @@ router.post('/:post_id/comments', auth, postComment); // localhost:5000/api/boar
 
 /**
  * @swagger
- * /api/board/{post_id}/comments/{comment_id}:
+ * /board/{post_id}/comments/{comment_id}:
  *   patch:
  *     tags: [Board]
  *     summary: 해당 게시글의 해당 댓글 수정
@@ -434,22 +433,22 @@ router.post('/:post_id/comments', auth, postComment); // localhost:5000/api/boar
  *     responses:
  *       200:
  *         description: 댓글 수정 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: UPDATE_COMMENT_SUCCESS
  *       500:
  *         description: 댓글 수정 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: UPDATE_COMMENT_FAILURE
  *       400:
  *         description: 필수 값이 없거나 해당 댓글이 없을 경우
- *         content: 
+ *         content:
  *            text/html:
  *              example: CONTENT_NO_ENTERED / COMMENT_DOESNT_EXIST
  *       401:
  *         description: 해당 댓글을 작성한 유저 또는 admin이 아닌 경우
- *         content: 
+ *         content:
  *            text/html:
  *              example: NO_PERMISSIONS
  */
@@ -457,19 +456,19 @@ router.patch('/:post_id/comments/:comment_id', auth, updateComment); // localhos
 
 /**
  * @swagger
- * /api/board/{post_id}/comments/{comment_id}:
+ * /board/{post_id}/comments/{comment_id}:
  *   put:
  *     tags: [Board]
  *     summary: 해당 게시글의 댓글 삭제
  *     responses:
  *       200:
  *         description: 댓글 삭제 성공
- *         content: 
+ *         content:
  *            text/html:
  *              example: COMMENT_DELETE_SUCCESS
  *       500:
  *         description: 댓글 삭제 실패
- *         content: 
+ *         content:
  *            text/html:
  *              example: COMMENT_DELETE_FAILURE
  */

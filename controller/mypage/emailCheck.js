@@ -22,27 +22,11 @@ const emailCheck = async (req, res, next) => {
         // EMAIL DOESNT EXIST
         return res.status(400).send('EMAIL_DOESNT_EXIST');
       } else {
-        // EMAIL EXISTS
-        const emailToken = jwt.sign(
-          {
-            id: users.id,
-            isAdmin: users.isAdmin,
-            username: users.username,
-            domain: users.domain,
-            nickname: users.nickname,
-            profile: users.profile
-          },
-          process.env.EMAIL_TOKEN_SECRET_KEY,
-          { expiresIn: '5m' }
-        );
-        res.cookie('emailToken', emailToken, { httpOnly: true });
-
         const transporter = nodemailer.createTransport({
           service: 'gmail',
           port: 465,
           secure: true,
           auth: {
-            //
             user: process.env.GMAIL_ID,
             pass: process.env.GMAIL_PW
           }

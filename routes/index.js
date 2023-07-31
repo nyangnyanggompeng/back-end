@@ -24,7 +24,7 @@ router.use('/users', usersRouter);
  * @swagger
  * tags:
  *   name: ChatGPT
- *   description: ChatGPT
+ *   description: 인터뷰룸
  */
 router.use('/chatgpt', chatgptrouter);
 
