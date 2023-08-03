@@ -17,11 +17,11 @@ const loginUser = async (req, res, next) => {
 
       if (!users) {
         // EMAIL DOESN'T EXISTS
-        return res.status(400).send('EMAIL_DOESNT_EXIST');
+        return res.status(400).send('LOGIN_FAILURE');
       } else {
         // EMAIL EXIST
         if (users.useStatus === 0) {
-          return res.status(401).send('DELETED_USER');
+          return res.status(400).send('LOGIN_FAILURE');
         }
 
         let check = await bcrypt.compare(password, users.password);

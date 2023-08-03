@@ -16,7 +16,7 @@ const emailCheck = async (req, res, next) => {
       } else {
         const username = req.cookies.username;
         const domain = req.cookies.domain;
-        console.log('username =', username, domain);
+
         const shasum = crypto.createHash('sha256');
         shasum.update(authNumber);
         const output = shasum.digest('hex');

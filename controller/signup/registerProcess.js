@@ -39,7 +39,7 @@ const registerProcess = async (req, res, next) => {
               username: username,
               domain: domain,
               password: encryptedPW,
-              auth_email: true,
+              authEmail: true,
               nickname: nickname,
               useStatus: 1
             });
