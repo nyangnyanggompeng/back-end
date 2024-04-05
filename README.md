@@ -3,8 +3,12 @@
 </div>
 
 <h2>🔍 서비스 소개 </h2>
+<div align="center">
+  
 <h3>chatGPT를 이용하여 면접 질문을 받고 피드백까지 받는 면접 준비 사이트입니다! <br /> </h3>
 <p> 🔗 Notion : https://www.notion.so/nyangnyanggompeng/aee2f1b54adc42fd87db042c568c923e?pvs=4 </p>
+
+</div>
 
 <h2>✨ 팀 소개</h2>
 <div align="center">
